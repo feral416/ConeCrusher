@@ -1,0 +1,13 @@
+﻿DocumentHash:
+  - FileName: coneCrusherHMIs.xml
+    Hash: kEXw+H3S7eCtJVa4QNmZt/WpD+qk9NA3jfN3MFYDfKw=
+LibraryMetaFileHash: b9aGWuN4yKdCc024UceKDNHb2lqDLSkGMbfseD3td3Y=
+LibraryVersion:
+  Guid: f7cc3099-53ad-4c58-868f-25ff656f842f
+  DependsOn:
+    - TypeName: switchgearHMI
+      VersionNumber: 0.0.1
+    - TypeName: coneCrusherHMI
+      VersionNumber: 0.0.1
+    - TypeName: lubricationSystemHMI
+      VersionNumber: 0.0.2

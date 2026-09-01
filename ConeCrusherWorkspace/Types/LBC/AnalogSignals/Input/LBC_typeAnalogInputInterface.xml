@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="commands" Datatype="&quot;LBC_typeInterfaceCommands&quot;" />
+            <Member Name="monitoring" Datatype="&quot;LBC_typeAnalogProcessValues&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="ExternalWritable" SystemDefined="true">false</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="configuration" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;" />
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeAnalogInputInterface</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module interface for external systems</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeAnalogInputInterface</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

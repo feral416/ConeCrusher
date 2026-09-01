@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="velocity" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Velocity/Speed for motion process (Value = 0.0: Permitted)</MultiLanguageText>
+              </Comment>
+              <StartValue>0.0</StartValue>
+            </Member>
+            <Member Name="acceleration" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Acceleration setpoint for motion process (Value &gt; 0.0: The specified value is used; Value = 0.0: Not permitted; Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="deceleration" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Deceleration setpoint for motion process (Value &gt; 0.0: The specified value is used; Value = 0.0: Not permitted; Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="jerk" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Jerk for velocity specification (Value &gt; 0.0: Smooth velocity profile, the specified value is used; (Value = 0.0: Trapezoid velocity profile; (Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="direction" Datatype="Int">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Motion direction of the axis (0: The sign of the velocity parameter defines the direction; 1: Positive direction; 2: Negative direction)</MultiLanguageText>
+              </Comment>
+              <StartValue>0</StartValue>
+            </Member>
+            <Member Name="positionControlled" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">TRUE: Position-controlled operation; FALSE: Non position-controlled operation</MultiLanguageText>
+              </Comment>
+              <StartValue>TRUE</StartValue>
+            </Member>
+            <Member Name="velocityChangeOnTheFly" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">TRUE: Changing velocity on-the-fly; FALSE: Velocity change requires a new rising edge on moveVelocity input</MultiLanguageText>
+              </Comment>
+              <StartValue>FALSE</StartValue>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LAxisCtrl_typeMoveVelocity</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Support: tech.team.motioncontrol@siemens.com</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LAxisCtrl_typeMoveVelocity</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

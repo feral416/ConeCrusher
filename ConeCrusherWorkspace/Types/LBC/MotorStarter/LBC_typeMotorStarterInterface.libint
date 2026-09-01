@@ -1,0 +1,13 @@
+﻿DocumentHash:
+  - FileName: LBC_typeMotorStarterInterface.xml
+    Hash: wqGYilZquHmdwtd+RNxpJYlPVVa59ZTmG2YVu7a0/XE=
+LibraryMetaFileHash: SadHoO1/v9EKTBSFmthG9elq2azKTVsgpjb7Rw/t/ok=
+LibraryVersion:
+  Guid: a4b25ed8-996d-45ea-bcf3-8a8f037577cc
+  DependsOn:
+    - TypeName: LBC_typeMotorStarterProcessValues
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeMotorStarterConfiguration
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeMotorStarterCommands
+      VersionNumber: 3.0.0

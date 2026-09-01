@@ -1,0 +1,223 @@
+﻿FUNCTION_BLOCK "SwitchgearControl"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+//6kV swithcgear control
+VAR_INPUT
+  cmdStart : Bool;
+  cmdReset : Bool;
+  fbOn : Bool;
+  fbOff : Bool;
+  readySg : Bool; // Switchgear ready signal
+  resetBlock : Bool;
+  current : Real;
+  sysTime : Time;
+END_VAR
+
+VAR_OUTPUT
+  start : Bool;
+  stop : Bool;
+END_VAR
+
+VAR_IN_OUT
+  interfaceIo : "switchgearInterface";
+  config : "switchgearConfig";
+  hmiIo : "switchgearHMI";
+END_VAR
+
+VAR
+  interface{S7_SETPOINT := 'False'} : "switchgearInterface";
+  prevSysTime : Time;
+  prevResetBlock : Bool;
+  prevReset : Bool;
+  buffStart : Bool;
+  buffStop : Bool;
+END_VAR
+
+VAR_TEMP
+  alm : "switchgearAlm";
+  almWord : Word;
+  nextStep : USInt;
+  timeDiff : Time;
+  hmi : "switchgearHMI";
+END_VAR
+
+VAR CONSTANT
+  INIT_ST : USInt := 0;
+  IDLE_ST : USInt := 1;
+  STARTING_ST : USInt := 10;
+  RUNNING_ST : USInt := 11;
+  STOPPING_ST : USInt := 12;
+  STOPPED_ST : USInt := 2;
+END_VAR
+
+
+BEGIN
+	IF #resetBlock AND NOT #prevResetBlock THEN
+	  #prevSysTime := T#0s;
+	  #interface.step := #INIT_ST;
+	  #interface.stepTime := T#0s;
+	END_IF;
+	#prevResetBlock := #resetBlock;
+	
+	IF #cmdReset AND NOT #prevReset THEN
+	  #interface.status.unackAlm := FALSE;
+	  #interface.stopCtx.step := 0;
+	  #interface.stopCtx.stepTime := T#0s;
+	  #interface.stopCtx.alm := #alm;
+	  #interface.stopCtx.almWord := WORD#16#0000;
+	END_IF;
+	#prevReset := #cmdReset;
+	
+	#timeDiff := #sysTime - #prevSysTime;
+	#interface.stepTime := #interface.stepTime + #timeDiff;
+	#prevSysTime := #sysTime;
+	
+	// Process alarms
+	"SwitchgearEvalAlms"(onlyOpAlms:=FALSE,
+	                   step:=#interface.step,
+	                   stepTime:=#interface.stepTime,
+	                   fbOn:=#fbOn,
+	                   fbOff:=#fbOff,
+	                   readySg:=#readySg,
+	                   buffStart:=#buffStart,
+	                   buffStop:=#buffStop,
+	                   alm:=#alm,
+	                   almWord:=#almWord,
+	                   config:=#config);
+	
+	#interface.status.ready := (#almWord = 0) AND NOT #interface.status.unackAlm;
+	
+	#nextStep := #interface.step;
+	IF (#almWord <> 0) AND #interface.status.operation THEN
+	  #nextStep := #STOPPED_ST;
+	ELSIF #interface.status.operation AND NOT #cmdStart THEN
+	  #nextStep := #STOPPING_ST;
+	ELSE
+	  CASE #interface.step OF
+	    #INIT_ST:
+	      #nextStep := #IDLE_ST;
+	    #IDLE_ST:
+	      IF #interface.status.ready AND #cmdStart THEN
+	        #nextStep := #STARTING_ST;
+	      END_IF;
+	    #STARTING_ST:
+	      IF #fbOn AND NOT #fbOff THEN
+	        #nextStep := #RUNNING_ST;
+	      END_IF;
+	    #RUNNING_ST:
+	      ;
+	    #STOPPING_ST:
+	      IF NOT #fbOn AND #fbOff THEN
+	        #nextStep := #STOPPED_ST;
+	      END_IF;
+	    #STOPPED_ST:
+	      #nextStep := #IDLE_ST;
+	    ELSE:
+	      #interface.step := #STOPPED_ST;
+	      #almWord.%X6 := #alm.stepErr := TRUE;
+	  END_CASE;
+	END_IF;
+	
+	IF #interface.step <> #nextStep THEN
+	  // Exit
+	  CASE #interface.step OF
+	    #INIT_ST:
+	      ;
+	    #IDLE_ST:
+	      ;
+	    #RUNNING_ST:
+	      ;
+	  END_CASE;
+	  // Checking state-dependent operation alarm again in next step
+	  // to prevent blind step execution
+	  IF #almWord = 0 THEN
+	    "SwitchgearEvalAlms"(onlyOpAlms:=TRUE,
+	                         step := #nextStep,
+	                         stepTime:=T#0s,
+	                         fbOn := #fbOn,
+	                         fbOff := #fbOff,
+	                         readySg:=#readySg,
+	                         buffStart:=#buffStart,
+	                         buffStop:=#buffStop,
+	                         alm := #alm,
+	                         almWord := #almWord,
+	                         config := #config);
+	  IF #almWord <> 0 THEN
+	      // Set params as if alarm triggered in next step
+	      #interface.step := #nextStep;
+	      #interface.stepTime := T#0s;
+	      #nextStep := #STOPPED_ST;
+	    END_IF;
+	  END_IF;
+	  // Entry
+	  CASE #nextStep OF
+	    #RUNNING_ST:
+	      ;
+	    #STOPPING_ST, #STOPPED_ST:
+	      IF #almWord <> 0 THEN
+	        #interface.stopCtx.step := #interface.step;
+	        #interface.stopCtx.stepTime := #interface.stepTime;
+	        #interface.stopCtx.alm := #alm;
+	        #interface.stopCtx.almWord := #almWord;
+	        #interface.status.unackAlm := TRUE;
+	      END_IF;
+	  END_CASE;
+	  #interface.step := #nextStep;
+	  #interface.stepTime := T#0s;
+	END_IF;
+	
+	CASE #interface.step OF
+	  #IDLE_ST:
+	    #interface.stepTime := T#0s;
+	  #STARTING_ST:
+	    ;
+	  #RUNNING_ST:
+	    ;
+	END_CASE;
+	
+	CASE #interface.step OF
+	  #STARTING_ST, #RUNNING_ST:
+	    #interface.status.operation := TRUE;
+	    #buffStart := TRUE;
+	    #buffStop := FALSE;
+	  ELSE:
+	    #interface.status.operation := FALSE;
+	    #buffStart := FALSE;
+	    #buffStop := TRUE;
+	    #interface.stepTime := T#0s;
+	END_CASE;
+	
+	#interface.alm := #alm;
+	#interface.almWord := #almWord;
+	#interface.status.alm := #almWord <> 0;
+	#interface.status.run := #interface.step = #RUNNING_ST;
+	#interface.current := #current;
+	
+	#interface.statusWord.%X0 := #interface.status.ready;
+	#interface.statusWord.%X1 := #interface.status.run;
+	#interface.statusWord.%X2 := #interface.status.operation;
+	#interface.statusWord.%X3 := #interface.status.alm;
+	#interface.statusWord.%X4 := #interface.status.unackAlm;
+	
+	#interfaceIo := #interface;
+	
+	#hmi.status := #interface.statusWord;
+	#hmi.step := #interface.step;
+	#hmi.stepTime := #interface.stepTime;
+	#hmi.current := #interface.current;
+	#hmi.alm := #interface.almWord;
+	#hmi.stopCtx.step := #interface.stopCtx.step;
+	#hmi.stopCtx.stepTime := #interface.stopCtx.stepTime;
+	#hmi.stopCtx.alm := #interface.stopCtx.almWord;
+	
+	#hmiIo := #hmi;
+	
+	IF #buffStart XOR #buffStop THEN
+	  #start := #buffStart;
+	  #stop := #buffStop;
+	ELSE
+	  #start := FALSE;
+	  #stop := TRUE;
+	END_IF;
+END_FUNCTION_BLOCK
+

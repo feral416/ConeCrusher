@@ -1,0 +1,10 @@
+﻿LibraryType:
+  Guid: 509313b5-d8bb-4c25-9f66-fb0a979e782f
+  Comment:
+    en-US: The digital signal function block is used to process a digital signal, to evaluate the quality of the signal, delay / filter it and pass out the result to the output.
+LibraryVersion:
+  VersionNumber: 3.1.0
+  Author: Siemens
+  IsDefault: true
+  Comment:
+    en-US: released version for v3.1

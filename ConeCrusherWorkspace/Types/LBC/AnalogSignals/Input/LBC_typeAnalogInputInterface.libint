@@ -1,0 +1,13 @@
+﻿DocumentHash:
+  - FileName: LBC_typeAnalogInputInterface.xml
+    Hash: Y5wZ9kO6EAh3sxAsxS+dF4l2e4IbzLfcI8BCkvMO0x0=
+LibraryMetaFileHash: bKM0jxD0cCsC2C4yAV16RlF/BmpUEfHvlaNaNdcphIw=
+LibraryVersion:
+  Guid: 30adb7da-d6ee-44ca-bcb7-f7878b857c14
+  DependsOn:
+    - TypeName: LBC_typeAnalogProcessValues
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeAnalogInputConfiguration
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeInterfaceCommands
+      VersionNumber: 3.0.0

@@ -1,0 +1,97 @@
+﻿FUNCTION_BLOCK "UnitTests"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR
+  // motor
+  motorSim : "MotorSim";
+  motor1 : "MotorControl";
+  motor1Interface : "motorInterface";
+  motor1Config : "motorConfig";
+  motor1Hmi : "motorHMI";
+  // switchgear
+  switchgearSim : "SwitchgearSim";
+  switchgear1 : "SwitchgearControl";
+  switchgear1Interface : "switchgearInterface";
+  switchgear1Cfg : "switchgearConfig";
+  switchgear1Hmi : "switchgearHMI";
+  // Two-step controller
+  twoStepController : "TwoStepController";
+  // Resetable TON with dt
+  prevSysTime : Time;
+  resTimer : "ResTONdt";
+  // Pre-start alarm
+  preStartAlarm : "PreStartAlarm";
+  // FOTD
+  FOTDTimer : Time;
+  FOTDModel : "Fotd";
+END_VAR
+
+VAR_TEMP
+  sysTime : Time;
+  dt : Time;
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+
+BEGIN
+	#sysTime := TIME_TCK();
+	#dt := #sysTime - #prevSysTime;
+	#prevSysTime := #sysTime;
+	
+	REGION Motor
+	  #motorSim(fwd:=#motor1.startFwd,
+	            rev:=#motor1.startRev,
+	            speedSp:=#motor1.speedSpMv,
+	            fbFwd=>#motor1.fbFwd,
+	            fbRev=>#motor1.fbRev,
+	            speedPv=>#motor1.speedPv,
+	            fault=>#motor1.fault);
+	  #motor1(sysTime:=#sysTime,
+	          interfaceIo:=#motor1Interface,
+	          config:=#motor1Config,
+	          hmiIo:=#motor1Hmi);
+	END_REGION Motor
+	
+	REGION Switchgear
+	  #switchgearSim(readySg=>#switchgear1.readySg,
+	                 fbOn=>#switchgear1.fbOn,
+	                 fbOff=>#switchgear1.fbOff,
+	                 current=>#switchgear1.current);
+	  #switchgear1(sysTime:=#sysTime,
+	               start=>#switchgearSim.start,
+	               stop=>#switchgearSim.stop,
+	               interfaceIo:=#switchgear1Interface,
+	               config:=#switchgear1Cfg,
+	               hmiIo:=#switchgear1Hmi);
+	END_REGION Switchgear
+	
+	REGION TwoStepController
+	  #twoStepController();
+	END_REGION TwoStepController
+	
+	#resTimer(dt:=#dt);
+	
+	#preStartAlarm(timeDiff := #dt);
+	
+	IF #sysTime - #FOTDTimer >= T#100ms THEN
+	  #FOTDModel( dt:=T#100ms);
+	  #FOTDTimer := #sysTime;
+	END_IF;
+	
+END_FUNCTION_BLOCK
+

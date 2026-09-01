@@ -1,0 +1,21 @@
+﻿ORGANIZATION_BLOCK "TimeErrorInterrupt"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+  Fault_ID : Byte;(*Fault identifier*)
+  Csg_OBnr : OB_ANY;(*Number of OB causing the error*)
+  Csg_Prio : UInt;(*Priority of OB causing the error*)
+END_VAR
+
+VAR_TEMP
+  sysTime : Time;
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+
+BEGIN
+END_ORGANIZATION_BLOCK
+

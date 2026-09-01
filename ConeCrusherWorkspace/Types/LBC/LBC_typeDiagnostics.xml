@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="status" Datatype="Word">
+              <AttributeList>
+                <BooleanAttribute Name="ExternalWritable" SystemDefined="true">false</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">16#0000-16#7FFF: Status of the FB  16#8000-16#FFFF: Error identification</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="subfunctionStatus" Datatype="Word">
+              <AttributeList>
+                <BooleanAttribute Name="ExternalWritable" SystemDefined="true">false</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Status or return value of called FB's, FCs, system blocks or other status information</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="stateNumber" Datatype="DInt">
+              <AttributeList>
+                <BooleanAttribute Name="ExternalWritable" SystemDefined="true">false</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">State in the state machine of the block where the error occurred</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeDiagnostics</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module related diagnostic information</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeDiagnostic</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

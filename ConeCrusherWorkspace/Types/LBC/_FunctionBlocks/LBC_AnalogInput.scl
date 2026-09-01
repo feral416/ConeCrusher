@@ -1,0 +1,471 @@
+﻿FUNCTION_BLOCK "LBC_AnalogInput"
+TITLE = LBC_AnalogInput
+{ S7_Optimized_Access := 'TRUE' }
+AUTHOR : Siemens_Digital_Industry
+FAMILY : LBC
+NAME : LBC_AnalogInput
+VERSION : 2.0
+//The function is used for processing (scaling) a value from analog input card and converts it into a meaningful unit (temperature, height, pressure...) that is within a user defined range.  
+//The periphery I/O card is working with current or voltage - depending on the card and its configuration.
+   VAR_INPUT 
+      enable : Bool;   // Enable functionality of FB
+      parentReferenceDesignator { S7_HiddenAssignment := 'Hide'} : WString[128];   // Name of the parent module for composing the module name
+      analogValue : Int;   // Input value from sensor (analog signal)
+      quality { S7_HiddenAssignment := 'Hide'} : Bool := TRUE;   // Quality bit from sensor  FALSE = error, TRUE = healthy [default]
+      reset : Bool;   // Reinitialiazing the block
+      simulation { S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Enable simulation input (analog value)
+      simulatedAnalogValue { S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Int;   // Simulated analog input value
+   END_VAR
+
+   VAR_OUTPUT 
+      valid { ExternalWritable := 'False'} : Bool;   // Valid set of output values available at the FB
+      busy { ExternalWritable := 'False'} : Bool;   // Working and new output values can be expected
+      error { ExternalWritable := 'False'} : Bool;   // An error occurred during the execution of the FB
+      status { ExternalWritable := 'False'} : Word := #STATUS_NO_CALL;   // 16#0000-16#7FFF: Status of the FB  16#8000-16#FFFF: Error identification (see following Table)
+      processValue { ExternalWritable := 'False'} : LReal;   // Processed and scaled sensor value
+      limitHigh2 { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Limit high 2 exceeded (Lim 2 > Lim1, resets Lim 1)
+      limitHigh1 { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Limit high 1 exceeded
+      limitLow1 { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Limit low 1 exceeded
+      limitLow2 { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Limit low 2 exceeded (Lim 2 < Lim1, resets Lim 1)
+      maxValueReached { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Maximum configured process value reached.  Value is limited to the maximum configured value.
+      minValueReached { ExternalWritable := 'False'; S7_HiddenAssignment := 'HideIfNoParamAssigned'} : Bool;   // Minimum configured process value reached.  Value is limited to the minimum configured value.
+   END_VAR
+
+   VAR_IN_OUT 
+      configuration : "LBC_typeAnalogInputConfiguration";
+      moduleInterface : "LBC_typeAnalogInputInterface";
+   END_VAR
+
+   VAR 
+      statProcessValues { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : "LBC_typeAnalogProcessValues";
+      statDiagnostics { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : "LBC_typeDiagnostics" := (#STATUS_NO_CALL, (), ());
+      statEmptyDiagnostics { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : "LBC_typeDiagnostics";   // Empty diagnostic information
+      statLimitationMessage { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : String[40];   // String to collect information for alarm message of value limitation
+      statLimitMessage { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : String[40];   // String to collect information for alarm message of limits
+      statErrorState { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Word := #STATUS_NO_CALL;   // Status word to store the last error state
+      statFirstCall { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool := TRUE;   // First call flag for reference designator initiialization
+      statDisableAlarms { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // TRUE: Disable the alarms of the block
+      statResetPrevious { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Previous value of 'reset'
+      statEnablePrevious { ExternalAccessible := 'False'; ExternalVisible := 'False'; ExternalWritable := 'False'} : Bool;   // Previous value of 'enable' input
+   END_VAR
+
+   VAR_TEMP 
+      tempLeftValue : String[20];   // Temp String to setup the limit violation message in #statLimitationMessage
+      tempRightValue : String[20];   // Temp String to setup the limit violation message in #statLimitationMessage
+   END_VAR
+
+   VAR CONSTANT 
+      OVER_RANGE : Int := 27649;   // Low limit for overshoot range
+      OVERFLOW : Int := 32511;   // High limit for overshoot range
+      UNDER_RANGE_UNIPOLAR : Int := -1;   // Low limit for unipolar undershoot range
+      UNDERFLOW_UNIPOLAR : Int := -4864;   // High limit for unipolar undershoot range
+      UNDER_RANGE_BIPOLAR : Int := -27649;   // Low limit for bipolar undershoot range
+      UNDERFLOW_BIPOLAR : Int := -32512;   // High limit for bipolar undershoot range
+      VAL_STRG_DISPLAY_ALL_CHARS : USInt := 0;   // 'VAL_STRG': Display all the necessary characters are written from the character position
+      VAL_STRG_PRECISON : USInt := 2;   // 'VAL_STRG': Number of decimal places
+      VAL_STRG_FORMAT_DECIMAL_FRACTION : Word := 16#0000;   // 'VAL_STRG': Format is decimal fraction
+      VAL_STRG_POSITION_START : UInt := 1;   // 'VAL_STRG': Character starting at which the result is written.
+      STATUS_NO_ERROR_OCCURRED : Word := 16#0000;   // Status: No error occurred during execution
+      STATUS_NO_CALL : Word := 16#7000;   // Status: Function block is not enabled
+      STATUS_ENABLED : Word := 16#7002;   // Status: Function block is enabled
+      ERR_CONFIGURATION_RANGE_PARAMETRIZATION : Word := 16#8201;   // Error: Configuration, range of parameters. min >= max
+      ERR_CONFIGURATION_SCALE_PROCESS_VALUE_POINTS : Word := 16#8202;   // Error: Configuration, scaling process value points. lower >= upper
+      ERR_CONFIGURATION_SCALE_ANALOG_VALUE_POINTS : Word := 16#8203;   // Error: Configuration, scaling analog value points. lower == upper
+      ERR_CONFIGURATION_LIMIT_LOW1_LOW2 : Word := 16#8211;   // Error: Configuration, incorrect values of limit low  Limit low 2 is greater than limit 1
+      ERR_CONFIGURATION_LIMIT_LOW1_HIGH1 : Word := 16#8212;   // Error: Configuration, incorrect values of limit low 1 and limit high 1  Limit low 1 is greater than limit high 1
+      ERR_CONFIGURATION_LIMIT_HIGH1_HIGH2 : Word := 16#8213;   // Error: Configuration, incorrect values of limit high  Limit high 1 is greater than limit high 2
+      ERR_QUALITY_BAD : Word := 16#8401;   // Error: Bad quality of the analog input signal (hardware periphery)
+      ERR_HIGH_LIMIT_OVERFLOW : Word := 16#8402;   // Error: Input signal is over the value 32511(Dec)
+      ERR_HIGH_LIMIT_OVER_RANGE : Word := 16#8403;   // Error: Input signal is over the value 27649(Dec)
+      ERR_LOW_LIMIT_UNDER_RANGE_UNIPOLAR : Word := 16#8404;   // Error: Input signal is below the value 0 (Dec), unipolar analog input configured
+      ERR_LOW_LIMIT_UNDERFLOW_UNIPOLAR : Word := 16#8405;   // Error: Input signal is below the value - 4864(Dec), unipolar analog input configured
+      ERR_LOW_LIMIT_UNDER_RANGE_BIPOLAR : Word := 16#8406;   // Error: Input signal is below the value -27649 (Dec), bipolar analog input configured
+      ERR_LOW_LIMIT_UNDERFLOW_BIPOLAR : Word := 16#8407;   // Error: Input signal is below the value - 32512(Dec), bipolar analog input configured
+   END_VAR
+
+
+BEGIN
+	REGION BLOCK INFO HEADER
+	  //===============================================================================
+	  // Siemens / (c)Copyright 2020-2024
+	  //-------------------------------------------------------------------------------
+	  // Title:            LBC_AnalogSignal
+	  // Comment/Function: The function is used for processing (scaling) a value from analog input card and converts it
+	  //                   into a meaningful unit (temperature, height, pressure...) that is within a user defined range.
+	  //                   The periphery I/O card is working with current or voltage - depending on the card and its configuration.
+	  // Library/Family:   LBC - Library of Basic Control modules
+	  // Author:           Siemens Digital Industries
+	  // Tested with:      S7-PLCSIM Advanced 6.0
+	  // Engineering:      TIA Portal V19
+	  // Restrictions:     ENO mechanism is not used - forced to true.
+	  // Requirements:     PLC (S7-1200 / S7-1500)
+	  //-------------------------------------------------------------------------------
+	  // Change log table:
+	  // Version  | Date       | Expert in charge        | Changes applied
+	  //----------|------------|-------------------------|-----------------------------
+	  // 01.00.00 | 15.02.2021 | SIMATIC Systems Support | First released version
+	  // 02.00.00 | 20.11.2023 | SIMATIC Systems Support | Changed InOut structure
+	  // 03.00.00 | 02.08.2024 | SIMATIC Systems Support | Reference designator changed to limited WString
+	  //===============================================================================
+	END_REGION
+	
+	REGION DESCRIPTION
+	(/*
+	The analog input function block converts an electrical signal from analog periphery (analog value) to a scaled (meaningful – temperature, weight, pressure, etc.) value, that is within a user defined range.
+	
+	The processing of the function is started by assigning `TRUE` signal to the `enable` input, from then on, the quality bit is monitored.  
+	If the `quality` bit is “healthy” (logical `TRUE`) then the input value is scaled according to settings of the block.
+	
+	In order to ensure, that scaling works correctly, it is necessary to set the minimum and the maximum values for input and output.  
+	Other optional settings are defining high and low limits/ levels.  
+	The block can be configured to monitor the level of the scaled value and generate alarms if a certain level is reached.
+	
+	For further information see the explanation in the picture and math formulas below.
+	
+	### Process chart
+	![LBC_AnalogInput Scale](LBC_AnalogInput_Scale.png "LBC_AnalogInput Scale")
+	
+	$ dx = x2 - x1 = scaleAnalogUppPoint - scaleAnalogLowPoint $  
+	$ dy = y2 - y1 = scaleProcessUppPoint - scaleProcessLowPoint $
+	
+	### Math equation
+	$ y = \frac{y_2 - y_1}{x_2 - x_1} \cdot (x - x_1) + y_1 $
+	
+	$ x = analogValue $  
+	$ y = processValue $  
+	$ x_1 = scaleAnalogLowPoint $  
+	$ x_2 = scaleAnalogUppPoint $  
+	$ y_1 = scaleProcessLowPoint $  
+	$ y_2 = scaleProcessUppPoint $
+	*/)
+	END_REGION DESCRIPTION
+	
+	REGION PROCESS INPUT SIGNALS
+	    // Creating the complete name during the first call of the FB
+	    IF #statFirstCall THEN
+	        // Mergeing parent- and self- reference designator if parent is present
+	        IF (#parentReferenceDesignator <> WString#'') THEN
+	            #statProcessValues.referenceDesignator := CONCAT (IN1 := #parentReferenceDesignator, IN2 := WSTRING#'.', IN3 := #configuration.referenceDesignator);
+	        ELSE
+	            #statProcessValues.referenceDesignator := #configuration.referenceDesignator;
+	        END_IF;
+	        #statFirstCall := FALSE;
+	    END_IF;
+	    
+	  // Assign and initialize internal variables
+	  #statProcessValues.enable := #enable;
+	  #statProcessValues.simulation := #simulation;
+	  
+	  // Check if simulation is activated
+	  IF #statProcessValues.simulation THEN
+	    #statProcessValues.analogValue := #simulatedAnalogValue;
+	  ELSE
+	    #statProcessValues.analogValue := #analogValue;
+	  END_IF;
+	  
+	  // Reset limit bits
+	  #statProcessValues.limitHigh2 := FALSE;
+	  #statProcessValues.limitHigh1 := FALSE;
+	  #statProcessValues.limitLow1 := FALSE;
+	  #statProcessValues.limitLow2 := FALSE;
+	  #statProcessValues.maxValueReached := FALSE;
+	  #statProcessValues.minValueReached := FALSE;
+	  
+	  // Copy configuration to static for usage in supervision
+	  #statDisableAlarms := #configuration.disableAlarms;
+	END_REGION PROCESS INPUT SIGNALS
+	
+	REGION RESET
+	    // Restarting FB
+	    IF (#reset OR #moduleInterface.commands.reset) AND NOT #statResetPrevious THEN
+	        #statProcessValues.enable := FALSE;
+	    ELSIF #moduleInterface.commands.reset AND #statResetPrevious THEN
+	        // If the reset came from an HMI deactivates the interface #reset command
+	        #moduleInterface.commands.reset := FALSE;
+	    ELSE
+	        //Normal operation
+	        ;
+	    END_IF;
+	    // setting previous reset valu for edge detection
+	    #statResetPrevious := (#reset OR #moduleInterface.commands.reset);
+	END_REGION RESET
+	
+	REGION PARAMETER CHECK
+	  // Check parameter if block is enabled
+	  IF #statProcessValues.enable THEN
+	    #statDiagnostics.status := #STATUS_ENABLED;
+	      // Validation of hardware range limits 
+	      // Check if parameters for hardware signal limits are within correct values
+	      IF #configuration.processValueMin >= #configuration.processValueMax THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState :=#statDiagnostics.status := #ERR_CONFIGURATION_RANGE_PARAMETRIZATION;
+	      ELSIF #configuration.scaleProcessLowPoint >= #configuration.scaleProcessUppPoint THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState := #statDiagnostics.status := #ERR_CONFIGURATION_SCALE_PROCESS_VALUE_POINTS;
+	      ELSIF #configuration.scaleAnalogLowPoint = #configuration.scaleAnalogUppPoint THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState := #statDiagnostics.status := #ERR_CONFIGURATION_SCALE_ANALOG_VALUE_POINTS;
+	        // Validation of limits 
+	        // limitLow2 < limitLow1 < limitHigh1 < limitHigh2
+	        // Limit Low 2
+	      ELSIF ((#configuration.limitLow2 > #configuration.limitLow1) OR
+	        (#configuration.limitLow2 > #configuration.limitHigh1) OR
+	        (#configuration.limitLow2 > #configuration.limitHigh2)) THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState:= #statDiagnostics.status := #ERR_CONFIGURATION_LIMIT_LOW1_LOW2;
+	        // Limit low 1
+	      ELSIF ((#configuration.limitLow1 > #configuration.limitHigh1) OR
+	        (#configuration.limitLow1 > #configuration.limitHigh2)) THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState:= #statDiagnostics.status := #ERR_CONFIGURATION_LIMIT_LOW1_HIGH1;
+	        // Limit high 1
+	      ELSIF (#configuration.limitHigh1 > #configuration.limitHigh2) THEN
+	        #statProcessValues.processValue := #configuration.default;
+	        #statErrorState := #statDiagnostics.status := #ERR_CONFIGURATION_LIMIT_HIGH1_HIGH2;
+	      END_IF;
+	      
+	    END_IF;
+	END_REGION PARAMETER CHECK
+	
+	REGION ENABLING/DISABLING
+	    IF #statProcessValues.enable AND NOT #statEnablePrevious  THEN
+	      // Mergeing parent- and self- reference designator if parent is present
+	        IF (#parentReferenceDesignator <> WString#'') THEN
+	          #statProcessValues.referenceDesignator := CONCAT(IN1 := #parentReferenceDesignator, IN2 := WSTRING#'.', IN3 := #configuration.referenceDesignator);
+	      ELSE
+	          #statProcessValues.referenceDesignator := #configuration.referenceDesignator;
+	      END_IF;
+	    //Clear alarm message string
+	    #statLimitMessage := #statLimitationMessage := '';
+	 // Initialize diagnostic informations
+	    #statDiagnostics  := #statEmptyDiagnostics;
+	    #statDiagnostics.status := #STATUS_ENABLED;
+	    #statErrorState := #STATUS_NO_ERROR_OCCURRED;
+	    // Initializes moduleInterface configuration with process configuration
+	    #moduleInterface.configuration := #configuration;
+	  END_IF;
+	  #statEnablePrevious := #statProcessValues.enable;
+	END_REGION ENABLING/DISABLING
+	
+	REGION PROCESS LOGIC
+	  // Use default value and set no call status if block is disabled
+	  IF NOT #statProcessValues.enable THEN
+	    #statProcessValues.processValue := #configuration.default;
+	    #statDiagnostics.status := #STATUS_NO_CALL;
+	    
+	    // In case of Error return default
+	  ELSIF #statDiagnostics.status.%X15 THEN
+	    #statProcessValues.processValue:= #configuration.default;
+	    
+	    // Checking if quality of signal is bad
+	  ELSIF NOT #quality AND NOT #simulation THEN
+	    // In case of bad quality from hardware module
+	    #statProcessValues.processValue := #configuration.default;
+	    #statErrorState := #statDiagnostics.status := #ERR_QUALITY_BAD;
+	    
+	    // No error - do process
+	  ELSE
+	    // Write status message, set no error
+	    #statDiagnostics.status := #STATUS_NO_ERROR_OCCURRED;
+	    // Validation of signal
+	    // Check input signal for over/underflow in system analog value range
+	    IF (#statProcessValues.analogValue > #OVERFLOW) THEN
+	      #statProcessValues.analogValue := #OVERFLOW;
+	      #statErrorState  :=#statDiagnostics.status := #ERR_HIGH_LIMIT_OVERFLOW;
+	      
+	    ELSIF (#statProcessValues.analogValue >= #OVER_RANGE) THEN
+	      #statProcessValues.analogValue := #OVER_RANGE;
+	      #statErrorState  := #statDiagnostics.status := #ERR_HIGH_LIMIT_OVER_RANGE;
+	      
+	    ELSIF (#statProcessValues.analogValue < #UNDERFLOW_UNIPOLAR) AND #configuration.isUnipolarSignal THEN
+	      #statProcessValues.analogValue := #UNDERFLOW_UNIPOLAR;
+	      #statErrorState  := #statDiagnostics.status := #ERR_LOW_LIMIT_UNDERFLOW_UNIPOLAR;
+	      
+	    ELSIF (#statProcessValues.analogValue <= #UNDER_RANGE_UNIPOLAR) AND #configuration.isUnipolarSignal THEN
+	      #statProcessValues.analogValue := #UNDER_RANGE_UNIPOLAR;
+	      #statErrorState  := #statDiagnostics.status := #ERR_LOW_LIMIT_UNDER_RANGE_UNIPOLAR;
+	      
+	    ELSIF (#statProcessValues.analogValue < #UNDERFLOW_BIPOLAR) AND NOT #configuration.isUnipolarSignal THEN
+	      #statProcessValues.analogValue := #UNDERFLOW_BIPOLAR;
+	      #statErrorState  := #statDiagnostics.status := #ERR_LOW_LIMIT_UNDERFLOW_BIPOLAR;
+	      
+	    ELSIF (#statProcessValues.analogValue <= #UNDER_RANGE_BIPOLAR) AND NOT #configuration.isUnipolarSignal THEN
+	      #statProcessValues.analogValue := #UNDER_RANGE_BIPOLAR;
+	      #statErrorState  := #statDiagnostics.status := #ERR_LOW_LIMIT_UNDER_RANGE_BIPOLAR;
+	    END_IF;
+	    
+	    // Scaling the analog input
+	    #statProcessValues.processValue := (((INT_TO_LREAL(#statProcessValues.analogValue) - #configuration.scaleAnalogLowPoint) / (#configuration.scaleAnalogUppPoint - #configuration.scaleAnalogLowPoint))
+	    * (#configuration.scaleProcessUppPoint - #configuration.scaleProcessLowPoint) + #configuration.scaleProcessLowPoint);
+	    
+	    // Check if process values are within the configured range
+	    REGION Check configured range
+	      IF #statProcessValues.processValue < #configuration.processValueMin THEN
+	        #tempLeftValue := #tempRightValue := '';
+	        
+	        VAL_STRG(IN     := #statProcessValues.processValue,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempLeftValue);
+	        
+	        VAL_STRG(IN     := #configuration.processValueMin,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statLimitationMessage := CONCAT(IN1 := #tempLeftValue, IN2 := ' ', IN3 := #configuration.physicalUnit, IN4 := ' < ', IN5 := #tempRightValue, IN6 := ' ', IN7 := #configuration.physicalUnit);
+	        #statProcessValues.processValue := #configuration.processValueMin;
+	        #statProcessValues.minValueReached := TRUE;
+	        
+	      ELSIF #statProcessValues.processValue > #configuration.processValueMax THEN
+	        #tempLeftValue := #tempRightValue := '';
+	        
+	        VAL_STRG(IN     := #statProcessValues.processValue,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempLeftValue);
+	        
+	        VAL_STRG(IN     := #configuration.processValueMax,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statLimitationMessage := CONCAT(IN1 := #tempLeftValue, IN2 := ' ', IN3 := #configuration.physicalUnit, IN4 := ' > ', IN5 := #tempRightValue, IN6 := ' ', IN7 := #configuration.physicalUnit);
+	        #statProcessValues.processValue := #configuration.processValueMax;
+	        #statProcessValues.maxValueReached := TRUE;
+	        
+	      ELSE
+	        ; // Nothing to do
+	      END_IF;
+	    END_REGION Check configured range
+	    
+	    // Checking if scaled value is within configured limits
+	    REGION Check configured limits
+	      #tempLeftValue := #tempRightValue := '';
+	      
+	      IF #statProcessValues.processValue >= #configuration.limitHigh2 THEN
+	        VAL_STRG(IN     := #configuration.limitHigh2,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statProcessValues.limitHigh1 := TRUE;
+	        #statProcessValues.limitHigh2 := TRUE;
+	        #tempRightValue := CONCAT(IN1 := ' >= ', IN2 := #tempRightValue);
+	        
+	      ELSIF #statProcessValues.processValue >= #configuration.limitHigh1 THEN
+	        VAL_STRG(IN     := #configuration.limitHigh1,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statProcessValues.limitHigh1 := TRUE;
+	        #tempRightValue := CONCAT(IN1 := ' >= ', IN2 := #tempRightValue);
+	        
+	      ELSIF #statProcessValues.processValue <= #configuration.limitLow2 THEN
+	        VAL_STRG(IN     := #configuration.limitLow2,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statProcessValues.limitLow1 := TRUE;
+	        #statProcessValues.limitLow2 := TRUE;
+	        #tempRightValue := CONCAT(IN1 := ' <= ', IN2 := #tempRightValue);
+	        
+	      ELSIF #statProcessValues.processValue <= #configuration.limitLow1 THEN
+	        VAL_STRG(IN     := #configuration.limitLow1,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempRightValue);
+	        
+	        #statProcessValues.limitLow1 := TRUE;
+	        #tempRightValue := CONCAT(IN1 := ' <= ', IN2 := #tempRightValue);
+	        
+	      ELSE
+	        ; // Nothimg to do
+	      END_IF;
+	      
+	      IF LEN(#tempRightValue) > 0 THEN
+	        VAL_STRG(IN     := #statProcessValues.processValue,
+	                 SIZE   := #VAL_STRG_DISPLAY_ALL_CHARS,
+	                 PREC   := #VAL_STRG_PRECISON,
+	                 FORMAT := #VAL_STRG_FORMAT_DECIMAL_FRACTION,
+	                 P      := #VAL_STRG_POSITION_START,
+	                 OUT    => #tempLeftValue);
+	        
+	        #statLimitMessage := CONCAT(IN1 := #tempLeftValue, IN2 := ' ', IN3 := #configuration.physicalUnit, IN4 := #tempRightValue, IN5 := ' ', IN6 := #configuration.physicalUnit);
+	      END_IF;
+	    END_REGION Check configured limits
+	  END_IF;
+	END_REGION PROCESS LOGIC
+	
+	REGION CONFIGURATION HANDLING
+	  // Refresh module interface configuration with process configuration
+	  IF #moduleInterface.commands.refreshConfiguration AND NOT #moduleInterface.commands.editConfiguration THEN
+	    #moduleInterface.configuration := #configuration;
+	  END_IF;
+	  #moduleInterface.commands.refreshConfiguration := FALSE;
+	  
+	  // Save module interface configuration to process configuration
+	  IF #moduleInterface.commands.saveConfiguration AND #moduleInterface.commands.editConfiguration THEN
+	    #configuration := #moduleInterface.configuration;
+	    // Initialize diagnostic informations
+	    #statDiagnostics := #statEmptyDiagnostics;
+	    #statDiagnostics.status := #STATUS_NO_CALL;
+	    #statErrorState := #STATUS_NO_ERROR_OCCURRED;
+	    // Mergeing parent- and self- reference designator if parent is present
+	    IF (#parentReferenceDesignator <> WString#'') THEN
+	        #statProcessValues.referenceDesignator := CONCAT(IN1 := #parentReferenceDesignator, IN2 := WSTRING#'.', IN3 := #configuration.referenceDesignator);
+	    ELSE
+	        #statProcessValues.referenceDesignator := #configuration.referenceDesignator;
+	    END_IF;
+	    #moduleInterface.commands.saveConfiguration := FALSE;
+	  END_IF;
+	END_REGION CONFIGURATION HANDLING
+	
+	REGION PROCESS OUTPUT SIGNALS
+	  REGION Write Process data to module interface
+	      #statProcessValues.error := #statDiagnostics.status.%X15;
+	      #statProcessValues.status := #statDiagnostics.status;
+	    #moduleInterface.monitoring := #statProcessValues;
+	  
+	  END_REGION Write Process data to module interface
+	  REGION Write work data to interface and outputs    
+	    // Write application specific static values to outputs
+	    #processValue := #statProcessValues.processValue;
+	    
+	    #limitHigh2 := #statProcessValues.limitHigh2;
+	    #limitHigh1 := #statProcessValues.limitHigh1;
+	    #limitLow1 := #statProcessValues.limitLow1;
+	    #limitLow2 := #statProcessValues.limitLow2;
+	    #maxValueReached := #statProcessValues.maxValueReached;
+	    #minValueReached := #statProcessValues.minValueReached;
+	    
+	    // Function status
+	    #valid := NOT #statProcessValues.error AND #statProcessValues.enable;
+	    #busy := (#statDiagnostics.status < 16#8000);
+	    #error := #statDiagnostics.status.%X15;
+	    #status := #statDiagnostics.status;
+	    // ENO mechanism disabled, ENO - forced to true
+	    ENO := TRUE;
+	  END_REGION Write static values to outputs
+	END_REGION PROCESS OUTPUT SIGNALS
+	
+END_FUNCTION_BLOCK
+

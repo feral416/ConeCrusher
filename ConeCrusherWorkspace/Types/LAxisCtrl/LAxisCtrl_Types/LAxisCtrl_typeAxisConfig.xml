@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="generalSettings" Datatype="&quot;LAxisCtrl_typeGeneralSettings&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of general settings</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="power" Datatype="&quot;LAxisCtrl_typePower&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_POWER function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="jog" Datatype="&quot;LAxisCtrl_typeJog&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of JOG function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="moveVelocity" Datatype="&quot;LAxisCtrl_typeMoveVelocity&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_MOVEVELOCITY function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="stop" Datatype="&quot;LAxisCtrl_typeStop&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_HALT function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="fastStop" Datatype="&quot;LAxisCtrl_typeFastStop&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_HALT function (alternative dynamics)</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="torqueLimiting" Datatype="&quot;LAxisCtrl_typeTorqueLimiting&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_TORQUELIMITING function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="homing" Datatype="&quot;LAxisCtrl_typeHoming&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of HOMING function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="posRelative" Datatype="&quot;LAxisCtrl_typePosRelative&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_MOVERELATIVE function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="posAbsolute" Datatype="&quot;LAxisCtrl_typePosAbsolute&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_MOVEABSOLUTE function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="posSuperimposed" Datatype="&quot;LAxisCtrl_typePosSuperimposed&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_MOVESUPERIMPOSED function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="haltSuperimposed" Datatype="&quot;LAxisCtrl_typeHaltSuperimposed&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_HALTSUPERIMPOSED function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="gearInRelative" Datatype="&quot;LAxisCtrl_typeGearInRelative&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_GEARIN function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="gearInAbsolute" Datatype="&quot;LAxisCtrl_typeGearInAbsolute&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_GEARIN_POS function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="gearInVelocity" Datatype="&quot;LAxisCtrl_typeGearInVelocity&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_GEARINVELOCITY function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="camIn" Datatype="&quot;LAxisCtrl_typeCamIn&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_CAMIN function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="gearOutCamOut" Datatype="&quot;LAxisCtrl_typeGearOutCamOut&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_GEAROUT / MC_CAMOUT function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="phasing" Datatype="&quot;LAxisCtrl_typePhasing&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_PHASING function</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="offset" Datatype="&quot;LAxisCtrl_typeOffset&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Configuration of MC_OFFSET function</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LAxisCtrl_typeAxisConfig</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Support: tech.team.motioncontrol@siemens.com</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LAxisCtrl_typeAxisConfig</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

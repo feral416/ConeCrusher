@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="limit" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Value of force/torque limiting (in the configured unit of measurement) (Value &gt;= 0.0: The specified value is used; Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="mode" Datatype="DInt">
+              <Comment>
+                <MultiLanguageText Lang="en-US">0: Force/Torque limiting; 1: Fixed stop detection</MultiLanguageText>
+              </Comment>
+              <StartValue>0</StartValue>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LAxisCtrl_typeTorqueLimiting</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Support: tech.team.motioncontrol@siemens.com</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LAxisCtrl_typeTorqueLimiting</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

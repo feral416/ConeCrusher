@@ -1,0 +1,132 @@
+﻿FUNCTION_BLOCK "FotdStat"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+//FOTD block based on multiple lag. Gains calculation on command. For constant dt only
+VAR_INPUT
+  u : LReal;        // Input signal
+  K : LReal := 1.0; // Process gain
+  Tau : LReal := 1.0; // First-order time constant
+  L : LReal := 0.0; // Dead time to approximate
+  N : Int := 10;   // Number of delay approximation lags
+  Ts : LReal := 0.1; // Sample time in seconds
+  bumplessReset : Bool; // Reset array to K * u
+  resetBlock : Bool;         // Reset states
+  recalcConstGains : Bool; // Recalc is done on init automatically
+END_VAR
+
+VAR_OUTPUT
+  y : LReal;              // Approximated FOTD output
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR
+  x : Array[0..#ARR_UPP_BOUND] OF LReal;
+  initDone : Bool := FALSE;
+  KStored : LReal := 1.0; // Process gain
+  TauStored : LReal := 1.0; // First-order time constant
+  LStored : LReal := 0.0; // Dead time to approximate
+  NStored : Int := 10;   // Number of delay approximation lags
+  TsStored : LReal := 0.1; // Sample time in seconds
+  nUse : Int;
+  alphaProc : LReal;
+  alphaLag : LReal;
+  Tlag : LReal;
+  prevRecalc : Bool;
+  prevReset : Bool;
+END_VAR
+
+VAR_TEMP
+  recalc : Bool;
+  reset : Bool;
+  i : Int;
+END_VAR
+
+VAR CONSTANT
+  ARR_UPP_BOUND : Int := 10;
+END_VAR
+
+
+BEGIN
+	#reset := #resetBlock AND NOT #prevReset OR NOT #initDone;
+	#prevReset := #resetBlock;
+	// Recalcs block constant/gains and parameters only on command, init and reset
+	// to reduce number of infrequent operations
+	#recalc := (#recalcConstGains AND NOT #prevRecalc) OR #reset;
+	#prevRecalc := #recalcConstGains;
+	
+	IF #recalc THEN
+	  // Store inputs
+	  #nUse := #N;
+	  // Limit N to available array size
+	  IF #nUse < 0 THEN
+	    #nUse := 0;
+	  END_IF;
+	  IF #nUse > #ARR_UPP_BOUND THEN
+	    #nUse := #ARR_UPP_BOUND;
+	  END_IF;
+	  
+	  #KStored := #K;
+	  #TauStored := #Tau;
+	  #LStored := #L;
+	  #NStored := #N;
+	  #TsStored := #Ts;
+	  
+	  // Calc gains
+	  IF #TauStored > 0.0 THEN
+	    #alphaProc := #TsStored / (#TauStored + #TsStored);
+	  END_IF;
+	  IF (#LStored > 0.0) AND (#nUse > 0) THEN
+	    #Tlag := #LStored / INT_TO_LREAL(#nUse);
+	    #alphaLag := #TsStored / (#Tlag + #TsStored);
+	  END_IF;
+	END_IF;
+	
+	
+	// Initialize states
+	IF #reset THEN
+	  IF #bumplessReset THEN
+	    FILL_BLK(IN := #KStored * #u,
+	             COUNT := INT_TO_ULINT(#ARR_UPP_BOUND + 1),
+	             OUT => #x[0]);
+	  ELSE
+	    FILL_BLK(IN := LREAL#0.0,
+	             COUNT := INT_TO_ULINT(#ARR_UPP_BOUND + 1),
+	             OUT => #x[0]);
+	  END_IF;
+	  #initDone := TRUE;
+	END_IF;
+	
+	
+	// Safety: if no sample time is given, pass through scaled input
+	IF #TsStored <= 0.0 THEN
+	  #y := #KStored * #u;
+	ELSE
+	  
+	  // ----------------------------------------------------
+	  // 1. First-order process part: K / (1 + Tau*s)
+	  // ----------------------------------------------------
+	  IF #TauStored > 0.0 THEN
+	    #x[0] := #x[0] + #alphaProc * (#KStored * #u - #x[0]);
+	  ELSE
+	    #x[0] := #KStored * #u;
+	  END_IF;
+	  
+	  // ----------------------------------------------------
+	  // 2. Dead-time approximation:
+	  //    e^{-Ls} approx (1 / (1 + (L/N)s))^N
+	  // ----------------------------------------------------
+	  IF (#LStored > 0.0) AND (#nUse > 0) THEN
+	    FOR #i := 1 TO #nUse DO
+	      #x[#i] := #x[#i] + #alphaLag * (#x[#i - 1] - #x[#i]);
+	    END_FOR;
+	    #y := #x[#nUse];
+	  ELSE
+	    #y := #x[0];
+	  END_IF;
+	  
+	END_IF;
+END_FUNCTION_BLOCK
+

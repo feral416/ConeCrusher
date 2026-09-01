@@ -1,0 +1,12 @@
+﻿LibraryType:
+  Guid: d6c7964e-177c-44d1-9c3e-2cc0c92e020a
+  UserTags:
+    - DoNotUse
+  Comment:
+    en-US: 'Support: tech.team.motioncontrol@siemens.com'
+LibraryVersion:
+  VersionNumber: 1.4.0
+  Author: AHuerta
+  IsDefault: true
+  Comment:
+    en-US: Typed version of LAxisCtr-Library V1.4 Master copy

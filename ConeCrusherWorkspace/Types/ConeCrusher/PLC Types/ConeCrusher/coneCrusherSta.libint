@@ -1,0 +1,11 @@
+﻿DocumentHash:
+  - FileName: coneCrusherSta.xml
+    Hash: Z8hCqCx+Hg5yjUJn63XiTKjgNNtrjoG1j9L5nR6ycOw=
+LibraryMetaFileHash: Dc+37/M1vwsZgsR39p31VFzHfK0syypUx7d00txdos0=
+LibraryVersion:
+  Guid: a331e0ee-d983-4c7f-a751-01ef41ee6f68
+  DependsOn:
+    - TypeName: coneCrusherAlm
+      VersionNumber: 0.0.3
+    - TypeName: coneCrusherStopCtx
+      VersionNumber: 0.0.3

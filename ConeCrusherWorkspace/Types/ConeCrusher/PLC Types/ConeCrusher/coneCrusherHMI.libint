@@ -1,0 +1,9 @@
+﻿DocumentHash:
+  - FileName: coneCrusherHMI.xml
+    Hash: hjXSS1tJ7X3GLmfpFfD/0OLQhsQwT7738QnV3iEbxaQ=
+LibraryMetaFileHash: Nt8RzC99oI/J/rPMWvNCDmnMA1Hg2rtD9zg39lQ6O80=
+LibraryVersion:
+  Guid: a3201fc8-4cbc-4186-b15c-cf29a1f25720
+  DependsOn:
+    - TypeName: stopCtxHMI
+      VersionNumber: 0.0.1

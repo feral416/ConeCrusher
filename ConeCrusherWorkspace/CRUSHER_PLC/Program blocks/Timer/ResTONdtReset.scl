@@ -1,0 +1,29 @@
+﻿FUNCTION "ResTONdtReset" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR_IN_OUT
+  tmr : "ResTONdt";
+END_VAR
+
+VAR_TEMP
+
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+
+BEGIN
+	#tmr.buffEt := #tmr.ET := T#0s;
+	#tmr.Q := FALSE;
+END_FUNCTION
+

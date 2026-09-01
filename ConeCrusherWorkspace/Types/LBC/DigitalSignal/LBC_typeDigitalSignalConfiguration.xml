@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="referenceDesignator" Datatype="WString[25]">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Device name or device ID</MultiLanguageText>
+              </Comment>
+              <StartValue>WSTRING#'DigitalSignal'</StartValue>
+            </Member>
+            <Member Name="onDelay" Datatype="Time">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Set time value for on delay</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="offDelay" Datatype="Time">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Set time value for off delay</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="default" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Value to be returned if function block is not enabled or quality is bad (independent from `invertProcessValue`</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="invertProcessValue" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Invert the process value (only the processed value, not the default)</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="disableAlarms" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Disable the alarms of the block</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeDigitalSignalConfiguration</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module related configuration parameters</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeDigitalSignalConfiguration</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

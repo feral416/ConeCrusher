@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="deceleration" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Deceleration setpoint for stop (Value &gt; 0.0: The specified value is used; Value = 0.0: Not permitted; Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="jerk" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Jerk for stop (Value &gt; 0.0: Smooth velocity profile, the specified value is used; Value = 0.0: Trapezoid velocity profile; Value &lt; 0.0: Use of the default value configured in the technology object)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="abortAcceleration" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">TRUE: The acceleration is set to 0.0 at the start of the job, and the deceleration immediately builds up; FALSE: The current acceleration at the start of the job is reduced using the configured jerk. Afterwards, the deceleration builds up</MultiLanguageText>
+              </Comment>
+              <StartValue>FALSE</StartValue>
+            </Member>
+            <Member Name="haltMode" Datatype="DInt">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Select the motion which is to be stopped (0: The basic motion and the superimposed motion are stopped; 1: The basic motion is stopped. The superimposed motion remains active)</MultiLanguageText>
+              </Comment>
+              <StartValue>0</StartValue>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LAxisCtrl_typeStop</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Support: tech.team.motioncontrol@siemens.com</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LAxisCtrl_typeStop</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

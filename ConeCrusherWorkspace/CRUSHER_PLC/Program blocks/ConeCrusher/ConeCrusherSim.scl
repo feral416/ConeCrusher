@@ -1,0 +1,300 @@
+﻿FUNCTION_BLOCK "ConeCrusherSim"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+  resetBlock : Bool;
+  dt : Time;
+END_VAR
+
+VAR_OUTPUT
+  simulation : Bool;
+  // LuS
+  oilPump1Fb : Bool;
+  oilPump1Fault : Bool;
+  oilPump2Fb : Bool;
+  oilPump2Fault : Bool;
+  inletOilFLow : Int;
+  returnOilSw : Bool;
+  oilTempTank : Int;
+  returnOilTemp : Int;
+  inletOilTemp : Int;
+  oilTempSwitchLow : Bool;
+  oilTempSwitchHigh : Bool;
+  oilLevelMin : Bool := TRUE;
+  oilLevelMid : Bool := TRUE;
+  oilLevelMax : Bool := FALSE;
+  inletOilPressure : Int;
+  // Crusher
+  sgReady : Bool;
+  sgFbOn : Bool;
+  sgFbOff : Bool;
+  sgCurrent : Int;
+  crusherEccentricTemp : Int;
+  crusherOuterBearingTemp : Int;
+  crusherInnerBearingTemp : Int;
+  driveFrontBearingTemp : Int;
+  driveRearBearingTemp : Int;
+  driveWindingTempP1 : Int;
+  driveWindingTempP2 : Int;
+  driveWindingTempP3 : Int;
+  prestartAlmFb : Bool;
+  premolding : Bool;
+END_VAR
+
+VAR_IN_OUT
+  IO : "coneCrusherIOs";
+  HMI : "coneCrusherSimHMI";
+END_VAR
+
+VAR
+  cmd{S7_SETPOINT := 'False'} : "coneCrusherSimCmd";
+  prevSimEn : Bool;
+  // LuS
+  oilPump1 : "MotorSim";
+  oilPump2 : "MotorSim";
+  inletOilFlowFOTD : "Fotd";
+  returnOilFlowFOTD : "Fotd";
+  oilTempTankFOTD : "Fotd";
+  returnOilTempFOTD : "Fotd";
+  inletOilTempFOTD : "Fotd";
+  // Crusher
+  switchgear : "SwitchgearSim";
+  crusherBearingsTempFOTD : "Fotd";
+  driveWindingsTempFOTD : "Fotd";
+  preStartAlmTON{InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+  preStartAlmTOF{InstructionName := 'TOF_TIME'; LibVersion := '1.0'} : TOF_TIME;
+END_VAR
+
+VAR_TEMP
+  reset : Bool;
+  risSimEn : Bool;
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+
+BEGIN
+	#cmd.simEn := #HMI.cmdWord.%X0;
+	#cmd.invertPrestartAlm := #HMI.cmdWord.%X1;
+	#cmd.oilPump1Fault := #HMI.cmdWord.%X2;
+	#cmd.oilPump2Fault := #HMI.cmdWord.%X3;
+	#cmd.premolding := #HMI.cmdWord.%X4;
+	
+	#simulation := #cmd.simEn;
+	#risSimEn := #cmd.simEn AND NOT #prevSimEn;
+	#prevSimEn := #cmd.simEn;
+	
+	IF NOT #cmd.simEn THEN
+	  RETURN;
+	END_IF;
+	
+	#reset := #resetBlock OR #risSimEn;
+	
+	
+	// Lubrication system
+	#oilPump1(fwd:=#IO.luS.self.out.pump1Start,
+	          rev:=FALSE,
+	          simFault:=#cmd.oilPump1Fault,
+	          fbFwd=>#oilPump1Fb,
+	          fault=>#oilPump1Fault);
+	
+	#oilPump2(fwd := #IO.luS.self.out.pump2Start,
+	          rev := FALSE,
+	          simFault := #cmd.oilPump2Fault,
+	          speedSp := 0.0,
+	          fbFwd => #oilPump2Fb,
+	          fault => #oilPump2Fault); 
+	  
+	IF #oilPump1.fbFwd XOR #oilPump2.fbFwd THEN
+	  #inletOilFlowFOTD.u := LREAL#130.0;
+	ELSIF #oilPump1.fbFwd AND #oilPump2.fbFwd THEN
+	  #inletOilFlowFOTD.u := LREAL#220.0;
+	ELSE
+	  #inletOilFlowFOTD.u := LREAL#0.0;
+	END_IF;
+	#inletOilFlowFOTD(K:=1.0,
+	              Tau:=3.0,
+	              L:=3.0,
+	              //N:=10,
+	              dt:=#dt,
+	              bumplessReset:=TRUE,
+	              resetBlock:=#reset);
+	#inletOilFLow := SCALE_X(MIN:=0,
+	                         VALUE:=NORM_X(MIN := 0.0,
+	                                       VALUE := #inletOilFlowFOTD.y,
+	                                       MAX := 300.0),
+	                         MAX:=27648);
+	#inletOilPressure := SCALE_X( MIN := 0,
+	                         VALUE := NORM_X(MIN := 0.0,
+	                                         VALUE := #inletOilFlowFOTD.y * 0.02,
+	                                         MAX :=16.0),
+	                         MAX := 27648);
+	
+	#returnOilFlowFOTD(u:=#inletOilFlowFOTD.y,
+	                   K:=1.0,
+	                   Tau:=10.0,
+	                   L:=20.0,
+	                   //N:=10,
+	                   dt:=#dt,
+	                   bumplessReset:=TRUE,
+	                   resetBlock:=#reset);
+	#returnOilSw := #returnOilFlowFOTD.y > LREAL#110.0;
+	
+	IF #switchgear.fbOn AND NOT #switchgear.fbOff AND #returnOilFlowFOTD.y > 50.0 THEN
+	  #returnOilTempFOTD.u := #HMI.ambientTemp + LREAL#30.0;
+	ELSE
+	  #returnOilTempFOTD.u := #HMI.ambientTemp;
+	END_IF;
+	#returnOilTempFOTD(K:=1.0,
+	                   Tau:=10.0,
+	                   L:=5.0,
+	                   //N:=10,
+	                   dt:=#dt,
+	                   bumplessReset:=TRUE,
+	                   resetBlock:=#reset);
+	#returnOilTemp := SCALE_X(MIN := 0,
+	                          VALUE := NORM_X(MIN := -50.0,
+	                                          VALUE := #returnOilTempFOTD.y,
+	                                          MAX := 120.0),
+	                          MAX := 27648);
+	  
+	IF #IO.luS.self.out.heaterOn THEN
+	  #oilTempTankFOTD.u := #returnOilTempFOTD.y + LREAL#50.0;
+	ELSE
+	  #oilTempTankFOTD.u := #returnOilTempFOTD.y;
+	END_IF;
+	#oilTempTankFOTD(K:=1.0,
+	                 Tau:=60.0,
+	                 L:=1.0,
+	                 //N:=10,
+	                 dt:=#dt,
+	                 bumplessReset:=TRUE,
+	                 resetBlock:=#reset);
+	#oilTempTank := SCALE_X(MIN := 0,
+	                        VALUE := NORM_X(MIN := -50.0,
+	                                      VALUE := #oilTempTankFOTD.y,
+	                                      MAX := 120.0),
+	                        MAX := 27648);
+	#oilTempSwitchLow := #oilTempTankFOTD.y < LReal#25.0;
+	#oilTempSwitchHigh := #oilTempTankFOTD.y > LReal#65.0;
+	
+	IF #IO.luS.self.out.waterVlvOpen THEN
+	  #inletOilTempFOTD.u := #oilTempTankFOTD.y - 20;
+	ELSE
+	  #inletOilTempFOTD.u := #oilTempTankFOTD.y;
+	END_IF;
+	
+	#inletOilTempFOTD(K:=1.0,
+	                  Tau:=2.0,
+	                  L:=5.0,
+	                  //N:=10,
+	                  dt:=#dt,
+	                  bumplessReset:=TRUE,
+	                  resetBlock:=#reset);
+	#inletOilTemp := SCALE_X(MIN := 0,
+	                         VALUE := NORM_X(MIN := -50.0,
+	                                         VALUE := #inletOilTempFOTD.y,
+	                                         MAX := 120.0),
+	                         MAX := 27648);
+	
+	// Crusher
+	#switchgear(start:=#IO.self.out.sgStart,
+	            stop:=#IO.self.out.sgStop,
+	            opCurrent:=50.0,
+	            dt:=TIME_TO_DINT(#dt),
+	            resetBlock:=#reset,
+	            readySg=>#sgReady,
+	            fbOn=>#sgFbOn,
+	            fbOff=>#sgFbOff);
+	#sgCurrent := SCALE_X(MIN := 0,
+	                      VALUE := NORM_X(MIN := 0.0,
+	                                      VALUE := #switchgear.current,
+	                                      MAX := 200.0),
+	                      MAX := 27648);
+	
+	IF #switchgear.fbOn AND NOT #switchgear.fbOff THEN
+	  #crusherBearingsTempFOTD.u := #HMI.ambientTemp + 20.0;
+	ELSE
+	  #crusherBearingsTempFOTD.u := #HMI.ambientTemp;
+	END_IF;
+	#crusherBearingsTempFOTD(K:=1.0,
+	                         Tau:=10.0,
+	                         L:=5.0,
+	                        // N:=10,
+	                         dt:=#dt,
+	                         bumplessReset:=TRUE,
+	                         resetBlock:=#reset);
+	
+	#crusherEccentricTemp := SCALE_X(MIN := 0,
+	                                 VALUE := NORM_X(MIN := -50.0,
+	                                                 VALUE := #crusherBearingsTempFOTD.y + 5.0,
+	                                                 MAX := 120.0),
+	                                 MAX := 27648);
+	
+	#crusherInnerBearingTemp := SCALE_X(MIN := 0,
+	                                   VALUE := NORM_X(MIN := -50.0,
+	                                                   VALUE := #crusherBearingsTempFOTD.y + 4.0,
+	                                                   MAX := 120.0),
+	                                   MAX := 27648);
+	
+	#crusherOuterBearingTemp :=SCALE_X(MIN := 0,
+	                                   VALUE := NORM_X(MIN := -50.0,
+	                                                   VALUE := #crusherBearingsTempFOTD.y + 3.0,
+	                                                   MAX := 120.0),
+	                                   MAX := 27648);
+	
+	#driveFrontBearingTemp := SCALE_X(MIN := 0,
+	                                 VALUE := NORM_X(MIN := -50.0,
+	                                                 VALUE := #crusherBearingsTempFOTD.y + 2.0,
+	                                                 MAX := 120.0),
+	                                 MAX := 27648);
+	
+	#driveRearBearingTemp := SCALE_X(MIN := 0,
+	                                VALUE := NORM_X(MIN := -50.0,
+	                                                VALUE := #crusherBearingsTempFOTD.y + 1.0,
+	                                                MAX := 120.0),
+	                                MAX := 27648);
+	  
+	IF #switchgear.fbOn AND NOT #switchgear.fbOff THEN
+	  #driveWindingsTempFOTD.u := #HMI.ambientTemp + 30.0;
+	ELSE
+	  #driveWindingsTempFOTD.u := #HMI.ambientTemp;
+	END_IF;
+	#driveWindingsTempFOTD(K := 1.0,
+	                         Tau := 5.0,
+	                         L :=5.0,
+	                         //N := 10,
+	                         dt := #dt,
+	                         bumplessReset := TRUE,
+	                         resetBlock := #reset);
+	  
+	#driveWindingTempP1 := SCALE_X(MIN := 0,
+	                               VALUE:=NORM_X(MIN:=-50.0,
+	                                             VALUE := #driveWindingsTempFOTD.y + 1.0,
+	                                             MAX:=120.0),
+	                               MAX := 27648);
+	
+	#driveWindingTempP2 := SCALE_X(MIN := 0,
+	                              VALUE:=NORM_X(MIN:=-50.0,
+	                                            VALUE := #driveWindingsTempFOTD.y + 2.0,
+	                                            MAX:=120.0),
+	                              MAX := 27648);
+	
+	#driveWindingTempP3 := SCALE_X(MIN := 0,
+	                               VALUE:=NORM_X(MIN:=-50.0,
+	                                             VALUE := #driveWindingsTempFOTD.y - 1.0,
+	                                             MAX:=120.0),
+	                               MAX := 27648);
+	
+	#preStartAlmTON(IN:=#IO.self.out.preStartAlmOn XOR #cmd.invertPrestartAlm,
+	                PT:=T#1s);
+	 #preStartAlmTOF(IN:=#preStartAlmTON.Q,
+	                 PT:=T#2s);
+	 #prestartAlmFb := #preStartAlmTOF.Q;
+	 
+	 #premolding := #cmd.premolding;
+	
+END_FUNCTION_BLOCK
+

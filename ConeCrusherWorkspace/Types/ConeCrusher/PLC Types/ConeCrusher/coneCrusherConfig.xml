@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="almMask" Datatype="DWord">
+              <StartValue>DW#16#FFFFFFFF</StartValue>
+            </Member>
+            <Member Name="crushOutTime" Datatype="Time">
+              <StartValue>T#30s</StartValue>
+            </Member>
+            <Member Name="premoldingDelay" Datatype="Time">
+              <StartValue>T#5s</StartValue>
+            </Member>
+            <Member Name="premoldingClearTime" Datatype="Time">
+              <StartValue>T#30s</StartValue>
+            </Member>
+            <Member Name="firstSignalTime" Datatype="Time">
+              <StartValue>T#10s</StartValue>
+            </Member>
+            <Member Name="pauseSignalTime" Datatype="Time">
+              <StartValue>T#10s</StartValue>
+            </Member>
+            <Member Name="secondSignalTime" Datatype="Time">
+              <StartValue>T#20s</StartValue>
+            </Member>
+            <Member Name="soundFbDelay" Datatype="Time">
+              <StartValue>T#3s</StartValue>
+            </Member>
+            <Member Name="signalTestTime" Datatype="Time">
+              <StartValue>T#10s</StartValue>
+            </Member>
+            <Member Name="stopSignalStTime" Datatype="Time">
+              <StartValue>T#3s</StartValue>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>coneCrusherConfig</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

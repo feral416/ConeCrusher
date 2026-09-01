@@ -1,0 +1,12 @@
+﻿LibraryType:
+  Guid: 91a5d113-6404-44a2-b3f1-e44a7340c7e6
+  UserTags:
+    - DoNotUse
+  Comment:
+    en-US: block typed
+LibraryVersion:
+  VersionNumber: 1.4.0
+  Author: AHuerta
+  IsDefault: true
+  Comment:
+    en-US: Typed version of LAxisCtr-Library V1.4 Master copy

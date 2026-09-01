@@ -1,0 +1,89 @@
+﻿FUNCTION "ConeCrusherEvalAlms" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+  onlyOpAlms : Bool;
+  step : USInt;
+  stepTime : LTime;
+  extStop : Bool;
+END_VAR
+
+VAR_OUTPUT
+  toStopping : Bool;
+END_VAR
+
+VAR_IN_OUT
+  cfg : "coneCrusherConfigs";
+  IO : "coneCrusherIOs";
+  alm : "coneCrusherAlm";
+  almDWord : DWord;
+  preStartAlarm : "PreStartAlarm";
+END_VAR
+
+VAR_TEMP
+END_VAR
+
+VAR CONSTANT
+  INIT_ST : USInt := 0;
+  IDLE_ST : USInt := 1;
+  PRE_START_ALARM_ST : USInt := 10;
+  STARTING_ST : USInt := 11;
+  RUNNING_ST : USInt := 20;
+  PREMOLDING_ST : USInt := 21;
+  STOPPING_ST : USInt := 30;
+  STOPPED_ST : USInt := 40;
+END_VAR
+
+
+BEGIN
+	#toStopping := FALSE;
+	// General alarms
+	IF NOT #onlyOpAlms THEN
+	  #almDWord.%X1 := #alm.extStop := #extStop;
+	  #almDWord.%X2 := #alm.emStop := NOT #IO.emStop.monitoring.processValue;
+	  #almDWord.%X4 := #alm.sgFault := #IO.sg.status.alm OR #IO.sg.status.unackAlm;
+	  #almDWord.%X8 := #alm.returnOilTempHiHi := #IO.luS.returnOilTemp.monitoring.limitHigh2;
+	  #almDWord.%X9 := #alm.noKeySwitch := NOT #IO.keySwitch.monitoring.processValue;
+	  #almDWord.%X10 := #alm.crusherEccentricTempHiHi := #IO.crusherEccentricTemp.monitoring.limitHigh2;
+	  #almDWord.%X11 := #alm.crusherOuterBearingTempHiHi := #IO.crusherOuterBearingTemp.monitoring.limitHigh2;
+	  #almDWord.%X12 := #alm.crusherInnerBearingTempHiHi := #IO.crusherInnerBearingTemp.monitoring.limitHigh2;
+	  #almDWord.%X13 := #alm.driveFrontBearingTempHiHi := #IO.driveFrontBearingTemp.monitoring.limitHigh2;
+	  #almDWord.%X14 := #alm.driveRearBearingTempHiHi := #IO.driveRearBearingTemp.monitoring.limitHigh2;
+	  #almDWord.%X15 := #alm.driveWindingTempP1HiHi := #IO.driveWindingTempP1.monitoring.limitHigh2;
+	  #almDWord.%X16 := #alm.driveWindingTempP2HiHi := #IO.driveWindingTempP2.monitoring.limitHigh2;
+	  #almDWord.%X17 := #alm.driveWindingTempP3HiHi := #IO.driveWindingTempP3.monitoring.limitHigh2;
+	  #almDWord.%X18 := #alm.driveCurrentHiHi := #IO.driveCurrent.monitoring.limitHigh2;
+	END_IF;
+	CASE #step OF
+	  #IDLE_ST, #PRE_START_ALARM_ST, #STOPPED_ST:
+	    #almDWord.%X5 := #alm.luSNotRun := NOT #IO.luS.self.sta.status.run;
+	    #almDWord.%X3 := #alm.premolding := #IO.premoldingSw.monitoring.processValue;
+	    #almDWord.%X6 := #alm.preStAlmNoFb := #preStartAlarm.noFb;
+	    #almDWord.%X7 := #alm.preStAlmFalseFb := #preStartAlarm.falseFb;
+	  #STARTING_ST:
+	    ;
+	  #RUNNING_ST:
+	    ;
+	  #PREMOLDING_ST:
+	    #almDWord.%X3 := #alm.premolding := #IO.premoldingSw.monitoring.processValue AND #stepTime > #cfg.self.premoldingClearTime;
+	  #STOPPING_ST:
+	    ;
+	END_CASE;
+	
+	#almDWord := #almDWord AND #cfg.self.almMask;
+	
+	// Alarms that transition to stopping
+	IF #almDWord <> 0 THEN
+	  RETURN;
+	END_IF;
+	
+	CASE #step OF
+	  #STARTING_ST, #RUNNING_ST, #PREMOLDING_ST:
+	    #almDWord.%X5 := #alm.luSNotRun := NOT #IO.luS.self.sta.status.run;
+	END_CASE;
+	
+	IF #almDWord <> 0 THEN
+	  #toStopping := TRUE;
+	END_IF;
+END_FUNCTION
+
