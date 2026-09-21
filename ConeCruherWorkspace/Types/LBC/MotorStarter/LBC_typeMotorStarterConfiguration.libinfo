@@ -1,0 +1,10 @@
+﻿LibraryType:
+  Guid: 7e3babae-b62f-4d79-8141-6e52961e581c
+  Comment:
+    en-US: Module related configuration parameters
+LibraryVersion:
+  VersionNumber: 3.0.0
+  Author: Siemens Digital Industry
+  IsDefault: true
+  Comment:
+    en-US: Release 3.0

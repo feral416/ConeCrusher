@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="luS" Datatype="&quot;lubricationSystemIOs&quot;" />
+            <Member Name="sg" Datatype="&quot;switchgearInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="self" Datatype="&quot;coneCrusherInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="btnStart" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="btnStop" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="keySwitch" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="emStop" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="btnReset" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="btnStartLuS" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="btnStopLuS" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="premoldingSw" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="prestartAlmFb" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="crusherEccentricTemp" Datatype="&quot;LBC_typeAnalogInputInterface&quot;" />
+            <Member Name="crusherOuterBearingTemp" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="crusherInnerBearingTemp" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveFrontBearingTemp" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveRearBearingTemp" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveWindingTempP1" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveWindingTempP2" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveWindingTempP3" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="driveCurrent" Datatype="&quot;LBC_typeAnalogInputInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="sgReady" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="sgFbOn" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="sgFbOff" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+            </Member>
+            <Member Name="sgStart" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="sgStop" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="preStartAlmOn" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;" />
+            <Member Name="feedEn" Datatype="&quot;LBC_typeDigitalSignalInterface&quot;">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Allow feed from upstream unit</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>coneCrusherIOs</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

@@ -1,0 +1,9 @@
+﻿DocumentHash:
+  - FileName: lubricationSystemHMI.xml
+    Hash: mu8jfbTltv+UQG+lO8sx4NLS5MyCy1R+oIWqIvzO8JM=
+LibraryMetaFileHash: Ho8zYLCLw+e9Y9+0LTBqAR2zj3fm0Ak6kqbR64b/eII=
+LibraryVersion:
+  Guid: 7fd451c5-a8fb-4aa4-84fc-020afbcb8d95
+  DependsOn:
+    - TypeName: stopCtxHMI
+      VersionNumber: 0.0.1

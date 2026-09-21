@@ -1,0 +1,13 @@
+﻿DocumentHash:
+  - FileName: switchgearInterface.xml
+    Hash: qIPj4y/QMGrCDFdrsVe/WGQpxnPktkzvmqo/KcRbnPg=
+LibraryMetaFileHash: nVUOHnKhiDOoRa/kVf1x2LxmpW7kZPo9p0kfwzB/OhQ=
+LibraryVersion:
+  Guid: 17d96f6f-7230-4f1c-86f5-7def835dfc7a
+  DependsOn:
+    - TypeName: switchgearStatus
+      VersionNumber: 0.0.1
+    - TypeName: switchgearAlm
+      VersionNumber: 0.0.1
+    - TypeName: switchgearStopCtx
+      VersionNumber: 0.0.1

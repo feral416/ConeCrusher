@@ -1,0 +1,15 @@
+﻿DocumentHash:
+  - FileName: lubricationSystemConfigs.xml
+    Hash: HQb4oDF0TlcuRtPen+/t+qTRBIwndU3rmsDkyJG+FRk=
+LibraryMetaFileHash: UcIkIQjxlR+/StJhlI6gI0NUy4ibjHa704Byeevu9b0=
+LibraryVersion:
+  Guid: a30ee607-d4a4-4e6b-9794-c28663320f71
+  DependsOn:
+    - TypeName: lubricationSystemConfig
+      VersionNumber: 0.0.1
+    - TypeName: LBC_typeAnalogInputConfiguration
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeMotorStarterConfiguration
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeDigitalSignalConfiguration
+      VersionNumber: 3.0.0

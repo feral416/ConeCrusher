@@ -1,0 +1,9 @@
+﻿DocumentHash:
+  - FileName: switchgearStopCtx.xml
+    Hash: mS2va6OjOyr36JQgW/ooh8bR4D91EILnB/O6ziSdBHE=
+LibraryMetaFileHash: WVSO7GdTjf3jfxnhF1PelbkyqBAxZ4AnC4QzEiW8XZc=
+LibraryVersion:
+  Guid: 11d3e7d9-8aee-49fa-83fc-516bc8d00d71
+  DependsOn:
+    - TypeName: switchgearAlm
+      VersionNumber: 0.0.1

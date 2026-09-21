@@ -1,0 +1,27 @@
+﻿ORGANIZATION_BLOCK "ProgrammingError"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+  BlockNr : UInt;(*Number of causing block*)
+  Reaction : USInt;(*0:ignore, 1:substitute, 2:skip*)
+  Fault_ID : Byte;(*Fault identifier*)
+  BlockType : USInt;(*16#01:OB, 16#02:FC, 16#03:FB, 16#04:SFC, 16#05:SFB, 16#06:DB: Type of block causing the error*)
+  Area : USInt;(*Area where the error occured*)
+  DBNr : DB_ANY;(*DB number if Area = DB or DI*)
+  Csg_OBNr : OB_ANY;(*Number of OB causing the error*)
+  Csg_Prio : USInt;(*Priority of OB causing the error*)
+  Width : USInt;(*0:bit, 1:byte, 2:word, 3:dword, 4:lword*)
+END_VAR
+
+VAR_TEMP
+
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+
+BEGIN
+END_ORGANIZATION_BLOCK
+

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="continuousUpdate" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">TRUE: Specify gear ratio continuously; FALSE: Specify gear ratio once at the start of the job with a positive edge</MultiLanguageText>
+              </Comment>
+              <StartValue>FALSE</StartValue>
+            </Member>
+            <Member Name="ratioNumerator" Datatype="DInt">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Gear ratio numerator (permitted integer values: -2147483648 to 2147483647; value 0 not permitted)</MultiLanguageText>
+              </Comment>
+              <StartValue>1</StartValue>
+            </Member>
+            <Member Name="ratioDenominator" Datatype="DInt">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Gear ratio denominator (permitted integer values: 1 to 2147483647)</MultiLanguageText>
+              </Comment>
+              <StartValue>1</StartValue>
+            </Member>
+            <Member Name="acceleration" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Acceleration for the synchronization (Value &gt; 0.0: The specified value is used; Value = 0.0: Not permitted; Value &lt; 0.0: The acceleration configured in "Technology object &gt; Configuration &gt; Extended parameters &gt; Dynamic default values" is used. &lt;TO&gt;.DynamicDefaults.Acceleration)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="deceleration" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Deceleration for the synchronization (Value &gt; 0.0: The specified value is used; Value = 0.0: Not permitted; Value &lt; 0.0: The deceleration configured in "Technology object &gt; Configuration &gt; Extended parameters &gt; Dynamic default values" is used. &lt;TO&gt;.DynamicDefaults.Deceleration)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="jerk" Datatype="LReal">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Jerk for the synchronization (Value &gt; 0.0: The specified value is used; Value = 0.0: No jerk limitation; Value &lt; 0.0: The jerk configured in "Technology object &gt; Configuration &gt; Extended parameters &gt; Dynamic default values" is used. &lt;TO&gt;.DynamicDefaults.Jerk)</MultiLanguageText>
+              </Comment>
+              <StartValue>-1.0</StartValue>
+            </Member>
+            <Member Name="positionControlled" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Position control of the following axis (TRUE: Position-controlled mode; FALSE: Non-position-controlled operation)</MultiLanguageText>
+              </Comment>
+              <StartValue>FALSE</StartValue>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LAxisCtrl_typeGearInVelocity</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Support: tech.team.motioncontrol@siemens.com</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LAxisCtrl_typeGearInVelocity</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items">
+            <AttributeList>
+              <Culture>de-DE</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

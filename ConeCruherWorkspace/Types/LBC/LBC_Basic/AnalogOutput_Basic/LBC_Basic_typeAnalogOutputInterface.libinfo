@@ -1,0 +1,8 @@
+﻿LibraryType:
+  Guid: e72f59a4-ec27-4a7a-87e2-99f3c75f379b
+LibraryVersion:
+  VersionNumber: 3.1.0
+  Author: Siemens
+  IsDefault: true
+  Comment:
+    en-US: Released version for LBC v3.1

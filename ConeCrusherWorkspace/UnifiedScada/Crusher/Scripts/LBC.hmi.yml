@@ -1,5 +1,0 @@
-#Version: 2.0
-
-ScriptModules:
-  LBC:
-    ScriptFile: LBC.hmi.js

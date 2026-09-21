@@ -1,0 +1,13 @@
+﻿DocumentHash:
+  - FileName: lubricationSystemInterface.xml
+    Hash: HMEJwUnUPm233jIpDsDtDI4kgdtfGt3/DcGkXJ9NzSc=
+LibraryMetaFileHash: EO7mdPaIgu+Va4KQNInN6kA5gWM0+gNF4MQUDCeHo9U=
+LibraryVersion:
+  Guid: 4d5082e8-5ca9-41f5-8fb1-9d86ae9a7ea5
+  DependsOn:
+    - TypeName: lubricationSystemSta
+      VersionNumber: 0.0.2
+    - TypeName: lubricationSystemCmd
+      VersionNumber: 0.0.1
+    - TypeName: lubricationSystemOut
+      VersionNumber: 0.0.1

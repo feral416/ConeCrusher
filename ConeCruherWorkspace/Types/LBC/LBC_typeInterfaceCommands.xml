@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="refreshConfiguration" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Copy global configuration parameters into module interface for external systems</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="editConfiguration" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Edit mode for configuration parameters in control system is active - copying into module interface is stopped</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="saveConfiguration" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Save configuration parameters from module interface into to global configuration parameters after change</MultiLanguageText>
+              </Comment>
+            </Member>
+            <Member Name="reset" Datatype="Bool">
+              <Comment>
+                <MultiLanguageText Lang="en-US">Reinitialiazing the block</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeInterfaceCommands</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module related commands from external systems</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeInterfaceCommands</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

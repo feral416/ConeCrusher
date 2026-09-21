@@ -1,0 +1,94 @@
+﻿FUNCTION "MotorEvalAlms" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+//Evaluate alarms of the motor
+VAR_INPUT
+  onlyOpAlms : Bool;
+  step : USInt;
+  stepTime : LTime;
+  cmdFwd : Bool;
+  cmdRev : Bool;
+  buffFwd : Bool;
+  buffRev : Bool;
+  fbFwd : Bool;
+  fbRev : Bool;
+  fault : Bool;
+  extStop : Bool;
+END_VAR
+
+VAR_OUTPUT
+  
+END_VAR
+
+VAR_IN_OUT
+  alm : "motorAlm";
+  almWord : Word;
+  config : "motorConfig";
+END_VAR
+
+VAR_TEMP
+  almw : Word;
+END_VAR
+
+VAR CONSTANT
+  INIT_ST : USInt;
+  IDLE_ST : USInt := 1;
+  STOPPED_ST  : USInt := 2;
+  STARTING_ST : USInt := 10;
+  RUNNING_ST : USInt := 11;
+  STOPPING_ST : USInt := 12;
+END_VAR
+
+
+BEGIN
+	(* Alarm list
+	  fault
+	  falseFbFwd
+	  falseFbRev
+	  stickingFwd
+	  stickingRev
+	  badCmd
+	  noFbFwd
+	  noFbRev
+	  badOut
+	  extStop
+	  stepErr
+	  bit11
+	  bit12
+	  bit13
+	  bit14
+	  bit15
+	*)
+	// General alarms
+	IF NOT #onlyOpAlms THEN
+	  #almWord.%X5 := #alm.badCmd := #cmdFwd AND #cmdRev;
+	  #almWord.%X0 := #alm.fault := #fault;
+	  #almWord.%X9 := #alm.extStop := #extStop;
+	  IF #buffFwd AND #buffRev THEN
+	    #almWord.%X8 := #alm.badOut := TRUE;
+	  END_IF;
+	  IF #step = #IDLE_ST THEN
+	    #almWord.%X1 := #alm.falseFbFwd := #fbFwd;
+	    #almWord.%X2 := #alm.falseFbRev := #fbRev;
+	  END_IF;
+	END_IF;
+	// Operational alarms
+	CASE #step OF
+	  #STARTING_ST:
+	    IF #stepTime > #config.fbDelayMax THEN
+	      #almWord.%X6 := #alm.noFbFwd := #buffFwd;
+	      #almWord.%X7 := #alm.noFbRev := #buffRev;
+	    END_IF;
+	  #RUNNING_ST:
+	    #almWord.%X6 := #alm.noFbFwd := #buffFwd AND NOT #fbFwd;
+	    #almWord.%X7 := #alm.noFbRev := #buffRev AND NOT #fbRev;
+	  #STOPPING_ST:
+	    IF #stepTime > #config.fbDelayMax THEN
+	      #almWord.%X3 := #alm.stickingFwd := #fbFwd;
+	      #almWord.%X4 := #alm.stickingRev := #fbRev;
+	    END_IF;
+	END_CASE;
+	
+	#almWord := #almWord AND #config.almMask;
+END_FUNCTION
+

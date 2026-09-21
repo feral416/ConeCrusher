@@ -1,9 +1,0 @@
-﻿DocumentHash:
-  - FileName: lubricationSystemStopCtx.xml
-    Hash: 8cysvkNcBPJlqkPtq9HqCaJTZQTBvaonZaPqbPJ4ijs=
-LibraryMetaFileHash: nhx7qol24sBMmRx6frc3hGYsw35wJ83dSVGbgBYne4o=
-LibraryVersion:
-  Guid: 479ea6e9-57ce-41f3-a26c-a67458ecfe14
-  DependsOn:
-    - TypeName: lubricationSystemAlm
-      VersionNumber: 0.0.1

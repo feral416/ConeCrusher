@@ -1,5 +1,0 @@
-#Version: 2.0
-
-ScriptModules:
-  LBC_EnableManualControl:
-    ScriptFile: LBC_EnableManualControl.def.hmi.js

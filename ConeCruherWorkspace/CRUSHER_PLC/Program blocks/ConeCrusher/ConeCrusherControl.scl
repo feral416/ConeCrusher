@@ -1,0 +1,329 @@
+﻿FUNCTION_BLOCK "ConeCrusherControl"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+VAR_INPUT
+  extStop : Bool;
+  resetBlock : Bool;
+  sysTime : Time;
+  
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR_IN_OUT
+  IO : "coneCrusherIOs";
+  hmiIo : "coneCrusherHMIs";
+  cfg : "coneCrusherConfigs";
+END_VAR
+
+VAR
+  sta : "coneCrusherSta";
+  out : "coneCrusherOut";
+  sg : "SwitchgearControl"; // Switchgear
+  luS : "LubricationSystemControl"; // Lubrication system
+  preStartAlarm : "PreStartAlarm";
+  prevSysTime : Time;
+  prevResetBlock : Bool;
+  prevCmdStart : Bool;
+  prevBtnStart : Bool;
+  prevBtnReset : Bool;
+  timer1 : "ResTONdt";
+END_VAR
+
+VAR_TEMP
+  start : Bool;
+  stop : Bool;
+  reset : Bool;
+  alm : "coneCrusherAlm";
+  almDWord : DWord;
+  nextStep : USInt;
+  timeDiff : Time;
+  hmi : "coneCrusherHMI";
+  cmd : "coneCrusherCmd";
+  toStopping : Bool;
+END_VAR
+
+VAR CONSTANT
+  // Commands
+  RESET_CMD : Word := 1;
+  START_CMD : Word := 2;
+  STOP_CMD : Word := 3;
+  START_LUS_CMD : Word := 4;
+  STOP_LUS_CMD : Word := 5;
+  TEST_PRE_START_ALARM_CMD : Word := 6;
+  // States
+  INIT_ST : USInt := 0;
+  IDLE_ST : USInt := 1;
+  PRE_START_ALARM_ST : USInt := 10;
+  STARTING_ST : USInt := 11;
+  RUNNING_ST : USInt := 20;
+  PREMOLDING_ST : USInt := 21;
+  STOPPING_ST : USInt := 30;
+  STOPPED_ST : USInt := 40;
+END_VAR
+
+
+BEGIN
+	IF #resetBlock AND NOT #prevResetBlock THEN
+	  #prevSysTime := T#0s;
+	  #sta.step := #INIT_ST;
+	  #sta.stepTime := T#0s;
+	END_IF;
+	#prevResetBlock := #resetBlock;
+	
+	// Read commands from HMI
+	#cmd.cmdWord := #hmiIo.self.cmd.cmdWord;
+	#hmiIo.self.cmd.cmdWord := 0;
+	
+	// Process commands
+	#reset := (#cmd.cmdWord = #RESET_CMD)
+	OR (#IO.btnReset.monitoring.processValue
+	          AND NOT #prevBtnReset);
+	#prevBtnReset := #IO.btnReset.monitoring.processValue;
+	
+	#stop := #IO.btnStop.monitoring.processValue
+	         OR (#cmd.cmdWord = #STOP_CMD);
+	
+	#start := ((#IO.btnStart.monitoring.processValue AND NOT #prevBtnStart)
+	          OR (#cmd.cmdWord = #START_CMD))
+	          AND NOT #stop;
+	#prevBtnStart := #IO.btnStart.monitoring.processValue;
+	
+	
+	IF #reset THEN
+	  #sta.status.unackAlm := FALSE;
+	  #sta.StopCtx.step := 0;
+	  #sta.StopCtx.stepTime := T#0s;
+	  #sta.StopCtx.alm := #alm;
+	  #sta.StopCtx.almDWord := WORD#16#00000000;
+	END_IF;
+	
+	#timeDiff := #sysTime - #prevSysTime;
+	#sta.stepTime := #sta.stepTime + #timeDiff;
+	#prevSysTime := #sysTime;
+	
+	// Process alarms
+	"ConeCrusherEvalAlms"(onlyOpAlms:=FALSE,
+	                            step:=#sta.step,
+	                            stepTime:=#sta.stepTime,
+	                            extStop:=#extStop,
+	                            toStopping=>#toStopping,
+	                            cfg:=#cfg,
+	                            IO:=#IO,
+	                            alm:=#alm,
+	                            almDWord:=#almDWord,
+	                            preStartAlarm:=#preStartAlarm);
+	
+	#sta.status.ready := (#almDWord = 0) AND NOT #sta.status.unackAlm;
+	
+	#nextStep := #sta.step;
+	IF (#almDWord <> 0) AND #sta.status.operation
+	    AND NOT #toStopping THEN
+	  #nextStep := #STOPPED_ST;
+	ELSIF (#almDWord <> 0) AND #sta.status.operation
+	    AND #toStopping AND #sta.step <> #STOPPING_ST THEN
+	  #nextStep := #STOPPING_ST;
+	ELSIF #sta.status.operation AND #stop THEN
+	  IF #sta.step = #RUNNING_ST OR #sta.step = #PREMOLDING_ST THEN
+	    #nextStep := #STOPPING_ST;
+	  ELSE
+	    #nextStep := #STOPPED_ST;
+	  END_IF;
+	ELSE
+	  CASE #sta.step OF
+	    #INIT_ST:
+	      #nextStep := #IDLE_ST;
+	    #IDLE_ST:
+	      IF #sta.status.ready AND #start THEN
+	        #nextStep := #PRE_START_ALARM_ST;
+	      END_IF;
+	    #PRE_START_ALARM_ST:
+	      IF #preStartAlarm.completed THEN
+	        #nextStep := #STARTING_ST;
+	      END_IF;
+	    #STARTING_ST:
+	      IF #IO.sg.status.run THEN
+	        #nextStep := #RUNNING_ST;
+	      END_IF;
+	    #RUNNING_ST:
+	      IF #timer1.Q THEN
+	        #nextStep := #PREMOLDING_ST;
+	      END_IF;
+	    #PREMOLDING_ST:
+	      IF #sta.stepTime > #cfg.self.premoldingClearTime THEN
+	        IF #IO.premoldingSw.monitoring.processValue THEN
+	          #nextStep := #STOPPED_ST;
+	        ELSE
+	          #nextStep := #RUNNING_ST;
+	        END_IF;
+	      END_IF;
+	    #STOPPING_ST:
+	      IF #sta.stepTime > #cfg.self.crushOutTime THEN
+	        #nextStep := #STOPPED_ST;
+	      END_IF;
+	    #STOPPED_ST:
+	      IF #reset THEN
+	        #nextStep := #IDLE_ST;
+	      END_IF;
+	    ELSE:
+	      #nextStep := #STOPPED_ST;
+	      #almDWord.%X0 := #alm.stepErr := TRUE;
+	  END_CASE;
+	END_IF;
+	
+	IF #sta.step <> #nextStep THEN
+	  // Exit
+	  CASE #sta.step OF
+	    #INIT_ST:
+	      ;
+	    #IDLE_ST:
+	      ;
+	    #RUNNING_ST:
+	      ;
+	  END_CASE;
+	  
+	  // Reevaluate alarms before entry
+	  IF #almDWord = 0 THEN
+	    "ConeCrusherEvalAlms"(onlyOpAlms := TRUE,
+	                          step := #nextStep,
+	                          stepTime := T#0s,
+	                          extStop := #extStop,
+	                          toStopping=>#toStopping,
+	                          cfg := #cfg,
+	                          IO := #IO,
+	                          alm := #alm,
+	                          almDWord := #almDWord,
+	                          preStartAlarm:=#preStartAlarm);
+	    IF #almDWord <> 0 THEN
+	      #sta.step := #nextStep;
+	      IF NOT #toStopping THEN
+	        #nextStep := #STOPPED_ST;
+	      ELSE
+	        #nextStep := #STOPPING_ST;
+	      END_IF;
+	      #sta.stepTime := T#0s;
+	    END_IF;
+	  END_IF;
+	  // Entry
+	  CASE #nextStep OF
+	    #RUNNING_ST:
+	      ;
+	    #STOPPING_ST, #STOPPED_ST:
+	      IF #almDWord <> 0 THEN
+	        #sta.StopCtx.step := #sta.step;
+	        #sta.StopCtx.stepTime := #sta.stepTime;
+	        #sta.StopCtx.alm := #alm;
+	        #sta.StopCtx.almDWord := #almDWord;
+	        #sta.status.unackAlm := TRUE;
+	      END_IF;
+	  END_CASE;
+	  #sta.step := #nextStep;
+	  #sta.stepTime := T#0s;
+	END_IF;
+	
+	#out.feedEn := FALSE;
+	CASE #sta.step OF
+	  #IDLE_ST:
+	    #sta.stepTime := T#0s;
+	  #STARTING_ST:
+	    ;
+	  #RUNNING_ST:
+	    #timer1.PT := #cfg.self.premoldingDelay;
+	    #timer1.IN := #IO.premoldingSw.monitoring.processValue;
+	    #out.feedEn := TRUE;
+	END_CASE;
+	
+	CASE #sta.step OF
+	  #PRE_START_ALARM_ST:
+	    #sta.status.operation := TRUE;
+	  #STARTING_ST, #RUNNING_ST, #PREMOLDING_ST, #STOPPING_ST:
+	    #sta.status.operation := TRUE;
+	    #sg.cmdStart := TRUE;
+	  ELSE:
+	    #sta.status.operation := FALSE;
+	    #sta.stepTime := T#0s;
+	    #sg.cmdStart := FALSE;
+	END_CASE;
+	
+	
+	#timer1(reset:=FALSE,
+	        dt:=#timeDiff);
+	#timer1.IN := FALSE;
+	
+	#preStartAlarm(resetBlock:=#resetBlock,
+	               cmdStart:=#sta.step = #PRE_START_ALARM_ST,
+	               cmdTest:=(#cmd.cmdWord = #TEST_PRE_START_ALARM_CMD),
+	               soundFb:=#IO.prestartAlmFb.monitoring.processValue,
+	               timeDiff:=#timeDiff,
+	               firstSignalTime:=#cfg.self.firstSignalTime,
+	               pauseTime:=#cfg.self.pauseSignalTime,
+	               secondSignalTime:=#cfg.self.secondSignalTime,
+	               soundFbDelay:=#cfg.self.soundFbDelay,
+	               testTime:=#cfg.self.signalTestTime,
+	               stopStTime:=#cfg.self.stopSignalStTime,
+	               out=>#out.preStartAlmOn);
+	
+	#sg(cmdReset:=(#cmd.cmdWord = #RESET_CMD),
+	    fbOn:=#IO.sgFbOn.monitoring.processValue,
+	    fbOff:=#IO.sgFbOff.monitoring.processValue,
+	    readySg:=#IO.sgReady.monitoring.processValue,
+	    resetBlock:=#resetBlock,
+	    current:=LREAL_TO_REAL(#IO.driveCurrent.monitoring.processValue),
+	    sysTime:=#sysTime,
+	    start=>#out.sgStart,
+	    stop=>#out.sgStop,
+	    interfaceIo:=#IO.sg,
+	    config:=#cfg.sg,
+	    hmiIo:=#hmiIo.sg);
+	
+	#luS(cmdStart := (#cmd.cmdWord = #START_LUS_CMD),
+	     cmdStop := (#cmd.cmdWord = #STOP_LUS_CMD),
+	     extStop:=NOT #IO.emStop.monitoring.processValue,
+	     cmdReset:=(#cmd.cmdWord = #RESET_CMD),
+	     resetBlock:=#resetBlock,
+	     sysTime:=#sysTime,
+	     IO:=#IO.luS,
+	     hmiIo:=#hmiIo.luS,
+	     cfg:=#cfg.luS);
+	
+	#sta.alm := #alm;
+	#sta.almDWord := #almDWord;
+	#sta.status.premoldingSw := #IO.premoldingSw.monitoring.processValue;
+	#sta.status.prestartAlmOn := #out.preStartAlmOn;
+	#sta.status.prestartAlmFb := #IO.prestartAlmFb.monitoring.processValue;
+	#sta.status.prestartAlmNoFb := #preStartAlarm.noFb;
+	#sta.status.prestartAlmFalseFb := #preStartAlarm.falseFb;
+	#sta.status.feedEn := #out.feedEn;
+	#sta.status.alm := #almDWord <> 0;
+	#sta.status.run := #sta.step = #RUNNING_ST OR #sta.step = #PREMOLDING_ST;
+	
+	#sta.statusDWord.%X0 := #sta.status.ready;
+	#sta.statusDWord.%X1 := #sta.status.operation;
+	#sta.statusDWord.%X2 := #sta.status.run;
+	#sta.statusDWord.%X3 := #sta.status.alm;
+	#sta.statusDWord.%X4 := #sta.status.unackAlm;
+	#sta.statusDWord.%X5 := #sta.status.premoldingSw;
+	#sta.statusDWord.%X6 := #sta.status.prestartAlmOn;
+	#sta.statusDWord.%X7 := #sta.status.prestartAlmFb;
+	#sta.statusDWord.%X8 := #sta.status.prestartAlmFalseFb;
+	#sta.statusDWord.%X9 := #sta.status.prestartAlmNoFb;
+	#sta.statusDWord.%X10 := #sta.status.feedEn;
+	
+	
+	#IO.self.sta := #sta;
+	#IO.self.cmd.cmdWord := 0;
+	#IO.self.out := #out;
+	
+	#hmi.sta.statusDWord := #sta.statusDWord;
+	#hmi.sta.step := #sta.step;
+	#hmi.sta.stepTime := #sta.stepTime;
+	#hmi.sta.almDWord := #sta.almDWord;
+	#hmi.sta.stopCtx.step := #sta.StopCtx.step;
+	#hmi.sta.stopCtx.stepTime := #sta.StopCtx.stepTime;
+	#hmi.sta.stopCtx.alm := #sta.StopCtx.almDWord;
+	
+	#hmiIo.self.sta := #hmi.sta;
+END_FUNCTION_BLOCK
+

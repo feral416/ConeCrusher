@@ -1,0 +1,1293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="Static">
+            <Member Name="ksd1" Datatype="&quot;coneCrusherConfigs&quot;">
+              <Sections>
+                <Section Name="None">
+                  <Member Name="luS" Datatype="&quot;lubricationSystemConfigs&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="self" Datatype="&quot;lubricationSystemConfig&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="timeToEstablishReturnFlow" Datatype="Time">
+                                <StartValue>T#60s</StartValue>
+                              </Member>
+                              <Member Name="timeToEstablishFlow" Datatype="Time">
+                                <StartValue>T#15s</StartValue>
+                              </Member>
+                              <Member Name="minOilFlow" Datatype="Real">
+                                <StartValue>110.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="localModeSwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'LusLocalModeSw'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="btnStart" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'LusBtnStart'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="btnStop" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'LusBtnStop'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="btnReset" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'LusBtnReset'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilPump1SelSwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilPump1Selected'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilPump2SelSwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilPump2Selected'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilPreparationSwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilPreparationSw'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="returnOilFlowSwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'ReturnOilFlowSw'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilLevelMax" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilLevelMax'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilLevelMid" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilLevelMid'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilLevelMin" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilLevelMin'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilTempSwitchHigh" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilTempSwHigh'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilTempSwitchLow" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilTempSwLow'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="fbPump1" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'FbPump1'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="fbPump2" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'FbPump2'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="pump1Fault" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'Pump1Fault'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="pump2Fault" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'Pump2Fault'</StartValue>
+                              </Member>
+                              <Member Name="onDelay" Datatype="Time">
+                                <StartValue>T#500ms</StartValue>
+                              </Member>
+                              <Member Name="offDelay" Datatype="Time">
+                                <StartValue>T#200ms</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilTempTank" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilTempTank'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'C'</StartValue>
+                              </Member>
+                              <Member Name="limitHigh2" Datatype="LReal">
+                                <StartValue>60.0</StartValue>
+                              </Member>
+                              <Member Name="limitHigh1" Datatype="LReal">
+                                <StartValue>55.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilPump1" Datatype="&quot;LBC_typeMotorStarterConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'Pump1'</StartValue>
+                              </Member>
+                              <Member Name="startingControlTime" Datatype="Time">
+                                <StartValue>T#3s</StartValue>
+                              </Member>
+                              <Member Name="stoppingControlTime" Datatype="Time">
+                                <StartValue>T#2s</StartValue>
+                              </Member>
+                              <Member Name="disableFeedbackRunning" Datatype="Bool">
+                                <StartValue>FALSE</StartValue>
+                              </Member>
+                              <Member Name="disableFeedbackError" Datatype="Bool">
+                                <StartValue>FALSE</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilPump2" Datatype="&quot;LBC_typeMotorStarterConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilPump2'</StartValue>
+                              </Member>
+                              <Member Name="startingControlTime" Datatype="Time">
+                                <StartValue>T#3s</StartValue>
+                              </Member>
+                              <Member Name="stoppingControlTime" Datatype="Time">
+                                <StartValue>T#2s</StartValue>
+                              </Member>
+                              <Member Name="disableFeedbackRunning" Datatype="Bool">
+                                <StartValue>FALSE</StartValue>
+                              </Member>
+                              <Member Name="disableFeedbackError" Datatype="Bool">
+                                <StartValue>FALSE</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="returnOilTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'ReturnOilTemp'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'C'</StartValue>
+                              </Member>
+                              <Member Name="isUnipolarSignal" Datatype="Bool">
+                                <StartValue>TRUE</StartValue>
+                              </Member>
+                              <Member Name="limitHigh2" Datatype="LReal">
+                                <StartValue>63.0</StartValue>
+                              </Member>
+                              <Member Name="limitHigh1" Datatype="LReal">
+                                <StartValue>60.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilFlow" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilFlow'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'l/m'</StartValue>
+                              </Member>
+                              <Member Name="limitHigh2" Datatype="LReal">
+                                <StartValue>500.0</StartValue>
+                              </Member>
+                              <Member Name="limitHigh1" Datatype="LReal">
+                                <StartValue>300.0</StartValue>
+                              </Member>
+                              <Member Name="limitLow1" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="limitLow2" Datatype="LReal">
+                                <StartValue>110.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>300.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>300.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="inletWaterTemperature" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'InletWaterTemp'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'C'</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="outletWaterTemperature" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OutletWatertemp'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'C'</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="inletOilTemperature" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'InletOilTemp'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'C'</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>120.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>-50.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="inletOilPressure" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'InletOilPressure'</StartValue>
+                              </Member>
+                              <Member Name="physicalUnit" Datatype="String[10]">
+                                <StartValue>'bar'</StartValue>
+                              </Member>
+                              <Member Name="processValueMax" Datatype="LReal">
+                                <StartValue>16.0</StartValue>
+                              </Member>
+                              <Member Name="processValueMin" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                                <StartValue>27648.0</StartValue>
+                              </Member>
+                              <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                                <StartValue>16.0</StartValue>
+                              </Member>
+                              <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                                <StartValue>0.0</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="pump1Start" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'Pump1Start'</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="pump2Start" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'Pump2Start'</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="heaterOn" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'HeaterOn'</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="waterVlvOpen" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'WaterVlvOpen'</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                        <Member Name="oilToCoolerVlv" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                          <Sections>
+                            <Section Name="None">
+                              <Member Name="referenceDesignator" Datatype="WString[25]">
+                                <StartValue>WSTRING#'OilToCoolerVlv'</StartValue>
+                              </Member>
+                            </Section>
+                          </Sections>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="btnStart" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherBtnStart'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#200ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="btnStop" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherBtnStop'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#200ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="keySwitch" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherKeySwitch'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="emStop" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'EmergencyStop'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="btnReset" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherBtnReset'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#200ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="btnStartLuS" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherBtnStartLus'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#200ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="btnStopLuS" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherBtnStopLus'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#200ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="premoldingSw" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'PremoldingSw'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="crusherEccentricTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'EccentricTemp'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>60.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="crusherOuterBearingTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherOuterBearTemp'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>60.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="crusherInnerBearingTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'CrusherInnerBearTemp'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>60.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveFrontBearingTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveFrontBearTemp'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>60.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveRearBearingTemp" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveRearBearTemp'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>60.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveWindingTempP1" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveWindingTempP1'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>80.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow1" Datatype="LReal">
+                          <StartValue>-200.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow2" Datatype="LReal">
+                          <StartValue>-270.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveWindingTempP2" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveWindingTempP2'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>80.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow1" Datatype="LReal">
+                          <StartValue>-200.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow2" Datatype="LReal">
+                          <StartValue>-270.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveWindingTempP3" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveWindingTempP3'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'C'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>80.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>70.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow1" Datatype="LReal">
+                          <StartValue>-200.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow2" Datatype="LReal">
+                          <StartValue>-270.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>120.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>-50.0</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="driveCurrent" Datatype="&quot;LBC_typeAnalogInputConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'DriveCurrent'</StartValue>
+                        </Member>
+                        <Member Name="physicalUnit" Datatype="String[10]">
+                          <StartValue>'A'</StartValue>
+                        </Member>
+                        <Member Name="isUnipolarSignal" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh2" Datatype="LReal">
+                          <StartValue>100.0</StartValue>
+                        </Member>
+                        <Member Name="limitHigh1" Datatype="LReal">
+                          <StartValue>80.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow1" Datatype="LReal">
+                          <StartValue>-200.0</StartValue>
+                        </Member>
+                        <Member Name="limitLow2" Datatype="LReal">
+                          <StartValue>-270.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMax" Datatype="LReal">
+                          <StartValue>200.0</StartValue>
+                        </Member>
+                        <Member Name="processValueMin" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+                          <StartValue>27648.0</StartValue>
+                        </Member>
+                        <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessUppPoint" Datatype="LReal">
+                          <StartValue>200.0</StartValue>
+                        </Member>
+                        <Member Name="scaleProcessLowPoint" Datatype="LReal">
+                          <StartValue>0.0</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="sgReady" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'SgReady'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="sgFbOn" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'SgFbOn'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="sgFbOff" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'SgFbOff'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="sgStart" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'SwitchgearStart'</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="sgStop" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'SwitchgearStop'</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="Bool">
+                          <StartValue>TRUE</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="preStartAlmOn" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'PreStartAlmOn'</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="feedEn" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'FeedEn'</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                  <Member Name="preStartAlmFb" Datatype="&quot;LBC_typeDigitalSignalConfiguration&quot;">
+                    <Sections>
+                      <Section Name="None">
+                        <Member Name="referenceDesignator" Datatype="WString[25]">
+                          <StartValue>WSTRING#'PreStartAlmFb'</StartValue>
+                        </Member>
+                        <Member Name="onDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="offDelay" Datatype="Time">
+                          <StartValue>T#500ms</StartValue>
+                        </Member>
+                        <Member Name="default" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="invertProcessValue" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                        <Member Name="disableAlarms" Datatype="Bool">
+                          <StartValue>FALSE</StartValue>
+                        </Member>
+                      </Section>
+                    </Sections>
+                  </Member>
+                </Section>
+              </Sections>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <MemoryReserve>100</MemoryReserve>
+      <Name>ConfigDB</Name>
+      <Namespace />
+      <Number>3</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

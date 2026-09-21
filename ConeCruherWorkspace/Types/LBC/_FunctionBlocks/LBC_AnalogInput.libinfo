@@ -1,0 +1,12 @@
+﻿LibraryType:
+  Guid: f1c73d6f-0c11-4563-ad5a-344834259267
+  Comment:
+    en-US: |-
+      The function is used for processing (scaling) a value from analog input card and converts it into a meaningful unit (temperature, height, pressure...) that is within a user defined range.  
+      The periphery I/O card is working with current or voltage - depending on the card and its configuration.
+LibraryVersion:
+  VersionNumber: 3.0.0
+  Author: Siemens Digital Industry
+  IsDefault: true
+  Comment:
+    en-US: Release 3.0

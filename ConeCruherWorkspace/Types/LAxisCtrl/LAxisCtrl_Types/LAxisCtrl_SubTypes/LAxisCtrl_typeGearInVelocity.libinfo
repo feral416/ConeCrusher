@@ -1,0 +1,12 @@
+﻿LibraryType:
+  Guid: 388e8c7a-cad6-4e2d-adea-64434272097a
+  UserTags:
+    - DoNotUse
+  Comment:
+    en-US: Updated to LAxisCtrl DBAny based V1.3.0
+LibraryVersion:
+  VersionNumber: 1.4.0
+  Author: AHuerta
+  IsDefault: true
+  Comment:
+    en-US: Typed version of LAxisCtr-Library V1.4 Master copy

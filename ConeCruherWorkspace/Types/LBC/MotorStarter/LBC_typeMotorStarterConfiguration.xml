@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="referenceDesignator" Datatype="WString[25]">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Device name or device ID</MultiLanguageText>
+              </Comment>
+              <StartValue>WSTRING#'MotorStarter'</StartValue>
+            </Member>
+            <Member Name="startingControlTime" Datatype="Time">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Control time for receiving feedback motor is running or time to ramp up motor if feedback is disabled</MultiLanguageText>
+              </Comment>
+              <StartValue>T#5s</StartValue>
+            </Member>
+            <Member Name="stoppingControlTime" Datatype="Time">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Control time for feedback motor is stopped (fb running has disappeared) or time to ramp down motor if feedback is disabled</MultiLanguageText>
+              </Comment>
+              <StartValue>T#5s</StartValue>
+            </Member>
+            <Member Name="resetTime" Datatype="Time">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Control time for reset - time to set reset output / the reset signal is present at the reset output (advanced motor starter)</MultiLanguageText>
+              </Comment>
+              <StartValue>T#5s</StartValue>
+            </Member>
+            <Member Name="disableFeedbackRunning" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Disable feedback for started / running motor</MultiLanguageText>
+              </Comment>
+              <StartValue>TRUE</StartValue>
+            </Member>
+            <Member Name="disableFeedbackError" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Disable feedback for error monitoring (e.g.  over temperature)</MultiLanguageText>
+              </Comment>
+              <StartValue>TRUE</StartValue>
+            </Member>
+            <Member Name="disableAlarms" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Disable the alarms of the block</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeMotorStarterConfiguration</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module related configuration parameters</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeMotorStarterConfiguration</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V21" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface>
+        <Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+          <Section Name="None">
+            <Member Name="referenceDesignator" Datatype="WString[25]">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Device name or device ID</MultiLanguageText>
+              </Comment>
+              <StartValue>WSTRING#'AnalogInput'</StartValue>
+            </Member>
+            <Member Name="physicalUnit" Datatype="String[10]">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Each value should have a physical unit (like [°C], [kWh], etc.)</MultiLanguageText>
+              </Comment>
+              <StartValue>'unit'</StartValue>
+            </Member>
+            <Member Name="isUnipolarSignal" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">TRUE: Sensor is a unipolar type (just positive values),  FALSE: Sensor is a bipolar type (positive and negative values)</MultiLanguageText>
+              </Comment>
+              <StartValue>TRUE</StartValue>
+            </Member>
+            <Member Name="default" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Default OUTPUT  process value to be returned if function block is not enabled or quality is bad</MultiLanguageText>
+              </Comment>
+              <StartValue>0.0</StartValue>
+            </Member>
+            <Member Name="limitHigh2" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Process value limit high 2</MultiLanguageText>
+              </Comment>
+              <StartValue>90.0</StartValue>
+            </Member>
+            <Member Name="limitHigh1" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Process value limit high 1</MultiLanguageText>
+              </Comment>
+              <StartValue>80.0</StartValue>
+            </Member>
+            <Member Name="limitLow1" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Process value limit low 1</MultiLanguageText>
+              </Comment>
+              <StartValue>-80.0</StartValue>
+            </Member>
+            <Member Name="limitLow2" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Process value limit low 2</MultiLanguageText>
+              </Comment>
+              <StartValue>-90.0</StartValue>
+            </Member>
+            <Member Name="processValueMax" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Maximum limit of the process value</MultiLanguageText>
+              </Comment>
+              <StartValue>100.0</StartValue>
+            </Member>
+            <Member Name="processValueMin" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Minimum limit of the process value</MultiLanguageText>
+              </Comment>
+              <StartValue>-100.0</StartValue>
+            </Member>
+            <Member Name="scaleAnalogUppPoint" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Upper point for the analog value.  Maximum value from the hardware module - i.e. 27648 </MultiLanguageText>
+              </Comment>
+              <StartValue>27648.0</StartValue>
+            </Member>
+            <Member Name="scaleAnalogLowPoint" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Lower point for the analog value.  Minimum value from the hardware module - i.e. 0</MultiLanguageText>
+              </Comment>
+              <StartValue>0.0</StartValue>
+            </Member>
+            <Member Name="scaleProcessUppPoint" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Upper point for the process value - scaled value</MultiLanguageText>
+              </Comment>
+              <StartValue>100.0</StartValue>
+            </Member>
+            <Member Name="scaleProcessLowPoint" Datatype="LReal">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Lower point for the process value - scaled value</MultiLanguageText>
+              </Comment>
+              <StartValue>-100.0</StartValue>
+            </Member>
+            <Member Name="disableAlarms" Datatype="Bool">
+              <AttributeList>
+                <BooleanAttribute Name="SetPoint" SystemDefined="true">true</BooleanAttribute>
+              </AttributeList>
+              <Comment>
+                <MultiLanguageText Lang="en-US">Disable the alarms of the block</MultiLanguageText>
+              </Comment>
+            </Member>
+          </Section>
+        </Sections>
+      </Interface>
+      <Name>LBC_typeAnalogInputConfiguration</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>Module related configuration parameters </Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="3" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text>LBC_typeAnalogInputConfiguration</Text>
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

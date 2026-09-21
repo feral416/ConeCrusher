@@ -1,0 +1,9 @@
+﻿LibraryType:
+  Guid: 6f701b65-ea09-4ea8-a68b-0a8a0f444fd5
+LibraryVersion:
+  VersionNumber: 3.3.0
+  Author: Siemens
+  IsDefault: true
+  MinimumTargetDeviceVersion: 20.0.0.0
+  Comment:
+    en-US: Release version for LBC V3.3

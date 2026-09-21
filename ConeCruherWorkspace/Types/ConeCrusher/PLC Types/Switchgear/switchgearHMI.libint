@@ -1,0 +1,9 @@
+﻿DocumentHash:
+  - FileName: switchgearHMI.xml
+    Hash: +EuWI/L4P/5Kw7q6KsePP0nySZ+ASE1901BlBg9F8Ek=
+LibraryMetaFileHash: NYntMV7R6cjwkxvPsh6dPmJoCqUqPVOYRc9BYaemQaQ=
+LibraryVersion:
+  Guid: e3b050a2-c94d-4d29-a44e-4188862d0d6a
+  DependsOn:
+    - TypeName: stopCtxHMI
+      VersionNumber: 0.0.1

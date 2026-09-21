@@ -1,0 +1,17 @@
+﻿DocumentHash:
+  - FileName: coneCrusherConfigs.xml
+    Hash: YffxpsCbJ7/LUxflTp5qyqiqM10MX80It4xt7+TOicU=
+LibraryMetaFileHash: kNEKmOVJBiU9eQdhaPr8/7aBgjAT/S0b7hd+RbxxZxA=
+LibraryVersion:
+  Guid: 83985d72-7ff8-4df3-b3f4-79d514c187bb
+  DependsOn:
+    - TypeName: lubricationSystemConfigs
+      VersionNumber: 0.0.1
+    - TypeName: coneCrusherConfig
+      VersionNumber: 0.0.1
+    - TypeName: switchgearConfig
+      VersionNumber: 0.0.1
+    - TypeName: LBC_typeAnalogInputConfiguration
+      VersionNumber: 3.0.0
+    - TypeName: LBC_typeDigitalSignalConfiguration
+      VersionNumber: 3.0.0
